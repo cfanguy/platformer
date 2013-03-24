@@ -2,19 +2,21 @@ function rect(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h }
 }
 
+function addBlock(event) {
+    ///<summary>Add Block to screen on click</summary>
+    rects.push(rect(event.offsetX - 10, event.offsetY - 10, 20, 20));
+}
+
 // Represent the level as a list of rectangles
 var rects = [
-	rect(0, 0, 400, 20),
-	rect(0, 0, 20, 300),
-	rect(0, 280, 400, 20),
-	rect(380, 0, 20, 300),
+    // level
+	rect(0, 0, 600, 20),
+	rect(0, 0, 20, 500),
+	rect(580, 0, 20, 500),
+    rect(0, 380, 600, 20),
+
+    // platform
 	rect(0, 100, 100, 20),
-	rect(100, 120, 20, 20),
-	rect(120, 140, 20, 20),
-	rect(140, 160, 20, 20),
-	rect(160, 180, 20, 20),
-	rect(180, 200, 20, 20),
-	rect(200, 220, 100, 20)
 ]
 
 // Return an object that supports at most "copies" simultaneous playbacks
@@ -65,8 +67,8 @@ function move(p, vx, vy) {
 
 // Record which key codes are currently pressed
 var keys = {}
-document.onkeydown = function(e) { keys[e.which] = true }
-document.onkeyup = function(e) { keys[e.which] = false }
+document.onkeydown = function (e) { keys[e.which] = true }
+document.onkeyup = function (e) { keys[e.which] = false }
 
 // Player is a rectangle with extra properties
 var player = rect(20, 20, 20, 20)
@@ -76,7 +78,7 @@ player.onFloor = false
 // Updates the state of the game for the next frame
 function update() {
 	// Update the velocity
-	player.velocity.x = 3 * (!!keys[39] - !!keys[37]) // right - left
+	player.velocity.x = 3 * (!!keys[68] - !!keys[65]) // right - left
 	player.velocity.y += 1 // Acceleration due to gravity
 
 	// Move the player and detect collisions
@@ -86,7 +88,7 @@ function update() {
 	if (expectedY != player.y) player.velocity.y = 0
 
 	// Only jump when we're on the floor
-	if (player.onFloor && keys[38]) {
+	if (player.onFloor && keys[32]) {
 		player.velocity.y = -13
 		//jumpSound.play()
 	}
@@ -97,7 +99,7 @@ function draw() {
 	var c = document.getElementById('screen').getContext('2d')
 
 	// Draw background
-	c.fillStyle = '#EEE'
+	c.fillStyle = '#000'
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height)
 
 	// Draw player
@@ -105,7 +107,7 @@ function draw() {
 	c.fillRect(player.x, player.y, player.w, player.h)
 
 	// Draw levels
-	c.fillStyle = '#BBB'
+	c.fillStyle = '#8B4513'
 	for (var i = 0; i < rects.length; i++) {
 		var r = rects[i]
 		c.fillRect(r.x, r.y, r.w, r.h)

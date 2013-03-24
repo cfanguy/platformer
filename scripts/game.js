@@ -9,15 +9,22 @@ function addBlock(event) {
 
 // Represent the level as a list of rectangles
 var rects = [
-    // level
-	rect(0, 0, 600, 20),
-	rect(0, 0, 20, 500),
-	rect(580, 0, 20, 500),
-    rect(0, 380, 600, 20),
-
     // platform
-	rect(0, 100, 100, 20),
+	rect(20, 100, 20, 20),
+	rect(40, 100, 20, 20),
+	rect(60, 100, 20, 20)
 ]
+
+// horizontal blocks
+for(var i = 0; i < 620; i+=20) {
+	rects.push(rect(i, 0, 20, 20));
+	rects.push(rect(i, 380, 20, 20));
+}
+
+for(var i = 0; i < 380; i+=20) {
+	rects.push(rect(0, i, 20, 20));
+	rects.push(rect(580, i, 20, 20));
+}
 
 // Return an object that supports at most "copies" simultaneous playbacks
 function createSound(path, copies) {
@@ -71,13 +78,15 @@ document.onkeydown = function (e) { keys[e.which] = true }
 document.onkeyup = function (e) { keys[e.which] = false }
 
 // Player is a rectangle with extra properties
-var player = rect(20, 20, 20, 20)
+var player = rect(20, 20, 26, 34)
 player.velocity = { x: 0, y: 0 }
 player.onFloor = false
 
+// set initial player img
+var img = document.getElementById("player_r");
+
 // Updates the state of the game for the next frame
 function update() {
-	// Update the velocity
 	player.velocity.x = 3 * (!!keys[68] - !!keys[65]) // right - left
 	player.velocity.y += 1 // Acceleration due to gravity
 
@@ -88,7 +97,7 @@ function update() {
 	if (expectedY != player.y) player.velocity.y = 0
 
 	// Only jump when we're on the floor
-	if (player.onFloor && keys[32]) {
+	if (player.onFloor && keys[87]) {
 		player.velocity.y = -13
 		//jumpSound.play()
 	}
@@ -96,28 +105,34 @@ function update() {
 
 // Renders a frame
 function draw() {
-	var c = document.getElementById('screen').getContext('2d')
+	var c = document.getElementById('screen').getContext('2d');
 
 	// Draw background
-	c.fillStyle = '#000'
-	c.fillRect(0, 0, c.canvas.width, c.canvas.height)
-
+	c.fillStyle = '#000';
+	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
+	
 	// Draw player
-	c.fillStyle = '#D00'
-	c.fillRect(player.x, player.y, player.w, player.h)
+	if(keys[68])
+		img = document.getElementById("player_r");
+	else
+		if(keys[65])
+			img = document.getElementById("player_l");
+	c.drawImage(img, player.x - 6, player.y - 5);
 
 	// Draw levels
-	c.fillStyle = '#8B4513'
+	//c.fillStyle = '#8B4513'
+	var blImg = document.getElementById("block");
 	for (var i = 0; i < rects.length; i++) {
-		var r = rects[i]
-		c.fillRect(r.x, r.y, r.w, r.h)
+		var r = rects[i];
+		c.drawImage(blImg, r.x, r.y);
+		//c.fillRect(r.x, r.y, r.w, r.h)
 	}
 }
 
 // Set up the game loop
 window.onload = function() {
 	setInterval(function() {
-		update()
-		draw()
-	}, 1000 / 60)
+		update();
+		draw();
+	}, 1000 / 60);
 }

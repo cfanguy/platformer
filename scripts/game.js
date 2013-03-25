@@ -2,10 +2,17 @@ function rect(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h }
 }
 
-function addBlock(event) {
-    ///<summary>Add Block to screen on click</summary>
-    rects.push(rect(event.offsetX - 10, event.offsetY - 10, 20, 20));
-}
+$("#screen").click(function(e) {
+	var imgLeft = $(this).offset().left;
+    var clickLeft = e.pageX;
+    var x= clickLeft - imgLeft;
+    
+    var imgTop = $(this).offset().top;
+    var clickTop = e.pageY;
+    var y = clickTop - imgTop;
+
+	rects.push(rect(x - 10, y - 10, 20, 20));
+});
 
 // Represent the level as a list of rectangles
 var rects = [

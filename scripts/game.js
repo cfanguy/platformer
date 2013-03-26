@@ -83,6 +83,8 @@ function move(p, vx, vy) {
 var keys = {}
 document.onkeydown = function (e) { keys[e.which] = true }
 document.onkeyup = function (e) { keys[e.which] = false }
+var direction = { right: false, left: false, up: false };
+
 
 // Player is a rectangle with extra properties
 var player = rect(20, 20, 26, 34)
@@ -94,7 +96,12 @@ var img = document.getElementById("player_r");
 
 // Updates the state of the game for the next frame
 function update() {
-	player.velocity.x = 3 * (!!keys[68] - !!keys[65]) // right - left
+    if ((!!keys[68] - !!keys[65]) != 0) {
+        player.velocity.x = 3 * (!!keys[68] - !!keys[65]); // right - left
+    }
+    else {
+        player.velocity.x = 3 * (!!direction.right - !!direction.left); // right - left
+    }
 	player.velocity.y += 1 // Acceleration due to gravity
 
 	// Move the player and detect collisions
@@ -104,7 +111,7 @@ function update() {
 	if (expectedY != player.y) player.velocity.y = 0
 
 	// Only jump when we're on the floor
-	if (player.onFloor && keys[87]) {
+	if (player.onFloor && (keys[87] || direction.up)) {
 		player.velocity.y = -13
 		//jumpSound.play()
 	}
@@ -119,10 +126,10 @@ function draw() {
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 	
 	// Draw player
-	if(keys[68])
+	if (player.velocity.x > 0)
 		img = document.getElementById("player_r");
 	else
-		if(keys[65])
+	    if (player.velocity.x < 0)
 			img = document.getElementById("player_l");
 	c.drawImage(img, player.x - 6, player.y - 5);
 

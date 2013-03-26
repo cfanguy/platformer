@@ -5,14 +5,18 @@
 	    </title>
     </head>
 	<body style="background-color: black;">
-		<img id="player_r" src="img/player_r.png" alt="The Scream" width="220" height="277" style="display:none">
-		<img id="player_l" src="img/player_l.png" alt="The Scream" width="220" height="277" style="display:none">
-		<img id="block" src="img/block.jpg" alt="The Scream" width="220" height="277" style="display:none">
+		<img id="player_r" src="img/player_r.png" alt="The Scream" width="220" height="277" style="display:none"/>
+		<img id="player_l" src="img/player_l.png" alt="The Scream" width="220" height="277" style="display:none"/>
+		<img id="block" src="img/block.jpg" alt="The Scream" width="220" height="277" style="display:none"/>
         <div style="width:600px;margin-left:auto;margin-right:auto;">
-		    <canvas id="screen" width="600" height="400" ></canvas>
+		    <canvas id="screen" width="600" height="500" ></canvas>
+            <span id="leftBtn" onmousedown="javascript:direction.left = true;" onmouseup="javascript:direction.left = false;" style="background-color:white;cursor:pointer;font-size:30px;color: black;">&nbsp;<<&nbsp;</span>
+            <span id="rightBtn" onmousedown="javascript:direction.right = true;" onmouseup="javascript:direction.right = false;" style="background-color:white;cursor:pointer;font-size:30px;margin-left:20px;color: black;">&nbsp;>>&nbsp;</span>
+            <span id="upBtn" onmousedown="javascript:direction.up = true;" onmouseup="javascript:direction.up = false;" style="background-color:white;cursor:pointer;font-size:30px;float:right;color: black;">Jump</span>
         </div>
-		
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="scripts/game.js"></script>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+        <script type="text/javascript" src="scripts/game.js"></script>
 	</body>
 </html>

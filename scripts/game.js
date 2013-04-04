@@ -79,6 +79,43 @@ function move(p, vx, vy) {
 	p.y += vy
 }
 
+// set the elements
+var l = document.getElementById('left');
+var r = document.getElementById('right');
+var j = document.getElementById('jump');
+
+// add touch events to each element
+l.addEventListener('touchstart', function(event){ left(event,true); }, false);
+l.addEventListener('touchend', function(event){ left(event,false); }, false);
+r.addEventListener('touchstart', function(event){ right(event,true); }, false);
+r.addEventListener('touchend', function(event){ right(event,false); }, false);
+j.addEventListener('touchstart', function(event){ jump(event,true); }, false);
+j.addEventListener('touchend', function(event){ jump(event,false); }, false);
+
+// set the left button move event
+function left(e,bool) {
+	if(e.target.localName != 'select'){
+        e.preventDefault(); 
+    }
+	direction.left = bool;
+}
+
+// set the right button move event
+function right(e,bool) {
+	if(e.target.localName != 'select'){
+        e.preventDefault(); 
+    }
+	direction.right = bool;
+}
+
+// set the jump button move event
+function jump(e,bool) {
+	if(e.target.localName != 'select'){
+        e.preventDefault(); 
+    }
+	direction.up= bool;
+}
+
 // Record which key codes are currently pressed
 var keys = {}
 document.onkeydown = function (e) { keys[e.which] = true }

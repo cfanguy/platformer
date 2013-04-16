@@ -11,16 +11,24 @@
         <img id="diamond" src="img/diamond_end.png" alt="diamond" style="display:none"/>
         <img id="spike" src="img/spikes.png" alt="spike" style="display:none"/>
 		<img id="block" src="img/block.jpg" alt="block" style="display:none"/>
+        <img id="next_level" src="img/next_level.png" alt="comp" style="display:none"/>
         <img id="complete" src="img/complete.png" alt="comp" style="display:none"/>
         <img id="gameover" src="img/gameover.png" alt="go" style="display:none"/>
         <div id="canvasDiv" style="width:600px;margin-left:auto;margin-right:auto;">
             <canvas id="screen" width="600" height="400" ></canvas>
+            <div style="width:130px;margin-left:auto;margin-right:auto;">
+                <span style="font-size:30px;color:white;">Blocks:&nbsp;</span><span style="font-size:30px;color:white;" id="blockNum"></span>
+            </div>
         </div>
         <div style="width:600px;margin-left:auto;margin-right:auto;">
             <input id="left" type="button" onmousedown="javascript:direction.left = true;" onmouseup="javascript:direction.left = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&lt;&lt;" />
             <input id="right" type="button" onmousedown="javascript:direction.right = true;" onmouseup="javascript:direction.right = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&gt;&gt;" />
-            <input id="reset" type="button" onmousedown="javascript:reset();" value="Reset Game" style="margin-left:25px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
 			<input id="jump" type="button" onmousedown="javascript:direction.up = true;" onmouseup="javascript:direction.up = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:right;color: black;" value="Jump" />
+        </div>
+
+        <div style="width:600px;margin-left:auto;margin-right:auto;margin-top:120px;">
+            <input id="reset" type="button" onmousedown="javascript:reset();" value="Reset Level" style="margin-left:60px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
+            <input id="Button1" type="button" onmousedown="javascript:level=1;reset();" value="Reset Game" style="margin-left:60px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
         </div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

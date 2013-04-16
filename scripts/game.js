@@ -2,6 +2,8 @@ var gameComplete = false, gameOver = false;
 var rects = [], spikes = [];
 var diam = diamond(560, 360, 20, 20);
 var player;
+var level;
+var blockCount;
 
 // Record which key codes are currently pressed
 var keys = {};
@@ -26,21 +28,31 @@ function spike(x, y, w, h) {
 // set the mouse click event to create blocks
 function setClickEvent() {
     $("#screen").click(function (e) {
-        var imgLeft = $(this).offset().left;
-        var clickLeft = e.pageX;
-        var x = clickLeft - imgLeft;
+        if (blockCount > 0) {
+            blockCount--;
+            document.getElementById("blockNum").innerText = blockCount;
 
-        var imgTop = $(this).offset().top;
-        var clickTop = e.pageY;
-        var y = clickTop - imgTop;
+            var imgLeft = $(this).offset().left;
+            var clickLeft = e.pageX;
+            var x = clickLeft - imgLeft;
 
-        rects.push(rect(x - 10, y - 10, 20, 20));
+            var imgTop = $(this).offset().top;
+            var clickTop = e.pageY;
+            var y = clickTop - imgTop;
+
+            rects.push(rect(x - 10, y - 10, 20, 20));
+        }
     });
 }
 
 
 // starts and resets the game
 function startGame() {
+    blockCount = 10;
+    document.getElementById("blockNum").innerText = blockCount;
+
+    setLevelBlocks();
+
     gameComplete = false;
     gameOver = false;
 
@@ -48,13 +60,10 @@ function startGame() {
     player.velocity = { x: 0, y: 0 };
     player.onFloor = false;
 
-    // Represent the level as a list of rectangles
-    rects = [
-        // platform
-        rect(20, 100, 20, 20),
-        rect(40, 100, 20, 20),
-        rect(60, 100, 20, 20)
-    ];
+    // initial platform for player
+    rects.push(rect(20, 100, 20, 20));
+    rects.push(rect(40, 100, 20, 20));
+    rects.push(rect(60, 100, 20, 20));
 
     // horizontal blocks and spikes
     for (var i = 0; i < 620; i += 20) {
@@ -85,6 +94,63 @@ function startGame() {
     r.addEventListener('touchend', function (event) { right(event, false); }, false);
     j.addEventListener('touchstart', function (event) { jump(event, true); }, false);
     j.addEventListener('touchend', function (event) { jump(event, false); }, false);
+}
+
+
+function setLevelBlocks() {
+    switch (level) {
+        case 1:
+            rects.push(rect(120, 300, 20, 20));
+            rects.push(rect(140, 300, 20, 20));
+            rects.push(rect(160, 300, 20, 20));
+
+            rects.push(rect(260, 100, 20, 20));
+            rects.push(rect(280, 100, 20, 20));
+            rects.push(rect(300, 100, 20, 20));
+
+            rects.push(rect(400, 300, 20, 20));
+            rects.push(rect(420, 300, 20, 20));
+            rects.push(rect(440, 300, 20, 20));
+            break;
+        case 2:
+            rects.push(rect(110, 330, 20, 20));
+            rects.push(rect(170, 320, 20, 20));
+
+            rects.push(rect(255, 160, 20, 20));
+            rects.push(rect(280, 155, 20, 20));
+            rects.push(rect(305, 160, 20, 20));
+
+            rects.push(rect(290, 315, 20, 20));
+            rects.push(rect(330, 320, 20, 20));
+            rects.push(rect(370, 310, 20, 20));
+
+            rects.push(rect(370, 220, 20, 20));
+            rects.push(rect(420, 200, 20, 20));
+            rects.push(rect(470, 220, 20, 20));
+            break;
+        case 3:
+            rects.push(rect(120, 180, 20, 20));
+            spikes.push(spike(120, 160, 20, 20));
+
+            rects.push(rect(200, 280, 20, 20));
+            spikes.push(spike(200, 260, 20, 20));
+
+            rects.push(rect(200, 100, 20, 20));
+            spikes.push(spike(200, 80, 20, 20));
+
+            rects.push(rect(280, 180, 20, 20));
+            spikes.push(spike(280, 160, 20, 20));
+
+            rects.push(rect(360, 100, 20, 20));
+            spikes.push(spike(360, 80, 20, 20));
+
+            rects.push(rect(360, 280, 20, 20));
+            spikes.push(spike(360, 260, 20, 20));
+
+            rects.push(rect(440, 180, 20, 20));
+            spikes.push(spike(440, 160, 20, 20));
+            break;
+    }
 }
 
 
@@ -172,18 +238,19 @@ function update() {
     else {
         player.velocity.x = 3 * (!!direction.right - !!direction.left); // right - left
     }
-	player.velocity.y += 1 // Acceleration due to gravity
+    player.velocity.y += 1; // Acceleration due to gravity
 
 	// Move the player and detect collisions
 	var expectedY = player.y + player.velocity.y
-	move(player, player.velocity.x, player.velocity.y)
-	player.onFloor = (expectedY > player.y)
-	if (expectedY != player.y) player.velocity.y = 0
+	move(player, player.velocity.x, player.velocity.y);
+	player.onFloor = (expectedY > player.y);
+	if (expectedY != player.y) {
+	    player.velocity.y = 0;
+	}
 
 	// Only jump when we're on the floor
 	if (player.onFloor && (keys[87] || direction.up)) {
-		player.velocity.y = -13
-		//jumpSound.play()
+	    player.velocity.y = -13;
 	}
 }
 
@@ -223,8 +290,17 @@ function draw() {
 	}
 
 	if (gameComplete) {
-	    var cImg = document.getElementById('complete');
-	    c.drawImage(cImg, 100, 60);
+	    if (level == 3) {
+	        var cImg = document.getElementById('complete');
+	        c.drawImage(cImg, 100, 60);
+	    }
+	    else {
+	        var cImg = document.getElementById('next_level');
+	        c.drawImage(cImg, 100, 60);
+	        level++;
+
+	        setTimeout(reset, 1500);
+	    }
 	};
 
 	if (gameOver) {
@@ -239,12 +315,16 @@ function draw() {
 
 // reset the game
 function reset() {
+    rects = [];
+    spikes = [];
     startGame();
 }
 
 
 // Set up the game loop
-window.onload = function() {
+window.onload = function () {
+    level = 1;
+
     setInterval(function () {
         if (gameComplete == false && gameOver == false) {
             update();

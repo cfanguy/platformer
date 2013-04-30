@@ -1,7 +1,8 @@
 var gameComplete = false, gameOver = false;
 var rects = [], spikes = [], rectsCreated = [];
+var GAME_END = 4;
 var diam = diamond(560, 360, 20, 20);
-var snake = snakeEnemy(420, 285, 30,15);
+var snake = null;
 var player;
 var level;
 var blockCount;
@@ -67,9 +68,11 @@ function startGame() {
     player.velocity = { x: 0, y: 0 };
     player.onFloor = false;
     
-    snake.velocity = { x: 0, y: 0 };
-    snake.velocity.x = -2;
-    snake.velocity.y = 1;
+    if (snake != null) {
+        snake.velocity = { x: 0, y: 0 };
+        snake.velocity.x = -2;
+        snake.velocity.y = 1;
+    }
 
     // initial platform for player
     rects.push(rect(20, 100, 20, 20));
@@ -124,6 +127,19 @@ function setLevelBlocks() {
             rects.push(rect(440, 300, 20, 20));
             break;
         case 2:
+            rects.push(rect(200, 260, 20, 20));
+            rects.push(rect(220, 260, 20, 20));
+            rects.push(rect(240, 260, 20, 20));
+            rects.push(rect(260, 260, 20, 20));
+            rects.push(rect(280, 260, 20, 20));
+            rects.push(rect(300, 260, 20, 20));
+            rects.push(rect(320, 260, 20, 20));
+            rects.push(rect(340, 260, 20, 20));
+            rects.push(rect(360, 260, 20, 20));
+
+            snake = snakeEnemy(320, 245, 30, 15);
+            break;
+        case 3:
             rects.push(rect(110, 330, 20, 20));
             rects.push(rect(170, 320, 20, 20));
 
@@ -139,7 +155,7 @@ function setLevelBlocks() {
             rects.push(rect(420, 200, 20, 20));
             rects.push(rect(470, 220, 20, 20));
             break;
-        case 3:
+        case 4:
             rects.push(rect(120, 180, 20, 20));
             spikes.push(spike(120, 160, 20, 20));
 
@@ -183,25 +199,29 @@ function overlapEnemy(a, b) {
 function movePlayer(p, vx, vy) {
     // move player along x axis and check created blocks
     for (var i = 0; i < rects.length; i++) {
-            var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-            if (overlap(c, rects[i])) {
-                if (vx < 0)
-                    vx = rects[i].x + rects[i].w - p.x;
-                    else if (vx > 0)
-                        vx = rects[i].x - p.x - p.w;
+        var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
+        if (overlap(c, rects[i])) {
+            if (vx < 0) {
+                vx = rects[i].x + rects[i].w - p.x;
             }
-            if (overlap(c, diam)) {
-                gameComplete = true;
+            else if (vx > 0) {
+                vx = rects[i].x - p.x - p.w;
             }
+        }
+        if (overlap(c, diam)) {
+            gameComplete = true;
+        }
     }
     for (var i = 0; i < rectsCreated.length; i++) {
-            var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-            if (overlap(c, rectsCreated[i])) {
-                if (vx < 0)
-                    vx = rectsCreated[i].x + rectsCreated[i].w - p.x;
-                    else if (vx > 0)
-                        vx = rectsCreated[i].x - p.x - p.w;
+        var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
+        if (overlap(c, rectsCreated[i])) {
+            if (vx < 0) {
+                vx = rectsCreated[i].x + rectsCreated[i].w - p.x;
             }
+            else if (vx > 0) {
+                vx = rectsCreated[i].x - p.x - p.w;
+            }
+        }
     }
     p.x += vx;
 
@@ -209,26 +229,30 @@ function movePlayer(p, vx, vy) {
     for (var i = 0; i < rects.length; i++) {
             var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
             if (overlap(c, rects[i])) {
-                if (vy < 0)
+                if (vy < 0) {
                     vy = rects[i].y + rects[i].h - p.y;
-                    else if (vy > 0)
-                        vy = rects[i].y - p.y - p.h;
+                }
+                else if (vy > 0) {
+                    vy = rects[i].y - p.y - p.h;
+                }
             }
             if (overlap(c, diam)) {
                 gameComplete = true;
             }
     }
     for (var i = 0; i < rectsCreated.length; i++) {
-            var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
-            if (overlap(c, rectsCreated[i])) {
-                if (vy < 0)
-                    vy = rectsCreated[i].y + rectsCreated[i].h - p.y;
-                    else if (vy > 0)
-                        vy = rectsCreated[i].y - p.y - p.h;
+        var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+        if (overlap(c, rectsCreated[i])) {
+            if (vy < 0) {
+                vy = rectsCreated[i].y + rectsCreated[i].h - p.y;
             }
-            if (overlap(c, diam)) {
-                gameComplete = true;
+            else if (vy > 0) {
+                vy = rectsCreated[i].y - p.y - p.h;
             }
+        }
+        if (overlap(c, diam)) {
+            gameComplete = true;
+        }
     }
     p.y += vy;
 
@@ -241,8 +265,10 @@ function movePlayer(p, vx, vy) {
     }
     
     // snake collision
-    if (overlap(c, snake)) {
-        gameOver = true;
+    if (snake != null) {
+        if (overlap(c, snake)) {
+            gameOver = true;
+        }
     }
 }
 
@@ -332,7 +358,9 @@ function update() {
     // Move the player and detect collisions
     var expectedY = player.y + player.velocity.y;
     movePlayer(player, player.velocity.x, player.velocity.y);
-    moveEnemy(snake, snake.velocity.x, snake.velocity.y);
+    if (snake != null) {
+        moveEnemy(snake, snake.velocity.x, snake.velocity.y);
+    }
     player.onFloor = (expectedY > player.y);
     if (expectedY != player.y) {
         player.velocity.y = 0;
@@ -354,12 +382,14 @@ function draw() {
     c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 
     // Draw player
-    if (player.velocity.x > 0)
+    if (!gameOver) {
+        if (player.velocity.x > 0)
             img = document.getElementById("player_r");
-    else
-        if (player.velocity.x < 0)
-            img = document.getElementById("player_l");
-    c.drawImage(img, player.x - 6, player.y - 5);
+        else
+            if (player.velocity.x < 0)
+                img = document.getElementById("player_l");
+        c.drawImage(img, player.x - 6, player.y - 5);
+    }
 
     // Draw levels
     var blImg = document.getElementById("block");
@@ -386,15 +416,17 @@ function draw() {
     // draw snake
     var snImg = document.getElementById('snake_l');
     var snRImg = document.getElementById('snake_r');
-    if(snake.velocity.x > 0) {
-        c.drawImage(snRImg, snake.x, snake.y);
-    }
-    else {
-        c.drawImage(snImg, snake.x, snake.y);  
+    if (snake != null) {
+        if (snake.velocity.x > 0) {
+            c.drawImage(snRImg, snake.x, snake.y);
+        }
+        else {
+            c.drawImage(snImg, snake.x, snake.y);
+        }
     }
 
     if (gameComplete) {
-        if (level == 3) {
+        if (level == GAME_END) {
             var cImg = document.getElementById('complete');
             c.drawImage(cImg, 100, 60);
         }
@@ -422,6 +454,7 @@ function reset() {
     rects = [];
     rectsCreated = [];
     spikes = [];
+    snake = null;
     startGame();
 }
 

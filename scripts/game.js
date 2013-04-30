@@ -1,5 +1,5 @@
 var gameComplete = false, gameOver = false;
-var rects = [], spikes = [];
+var rects = [], spikes = [], rectsCreated = [];
 var diam = diamond(560, 360, 20, 20);
 var snake = snakeEnemy(420, 285, 30,15);
 var player;
@@ -16,6 +16,9 @@ var direction = { right: false, left: false, up: false };
 var img = document.getElementById("player_r");
 
 function rect(x, y, w, h) {
+    return { x: x, y: y, w: w, h: h };
+}
+function rectCreated(x, y, w, h) {
     return { x: x, y: y, w: w, h: h };
 }
 function diamond(x, y, w, h) {
@@ -44,7 +47,7 @@ function setClickEvent() {
             var clickTop = e.pageY;
             var y = clickTop - imgTop;
 
-            rects.push(rect(x - 10, y - 10, 20, 20));
+            rectsCreated.push(rectCreated(x - 10, y - 10, 20, 20));
         }
     });
 }
@@ -163,8 +166,14 @@ function setLevelBlocks() {
 
 
 // returns true if and only if a and b overlap
-function overlapTest(a, b) {
+function overlap(a, b) {
     return a.x < b.x + b.w && a.x + a.w > b.x &&
+         a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+
+function overlapEnemy(a, b) {
+    return a.x < b.x - 15 + b.w && a.x + a.w > b.x + 15 &&
          a.y < b.y + b.h && a.y + a.h > b.y;
 }
 
@@ -172,31 +181,52 @@ function overlapTest(a, b) {
 // move the player p along vx then along vy, but only move
 // as far as we can without colliding with a solid rectangle
 function movePlayer(p, vx, vy) {
-    // move player along x axis
+    // move player along x axis and check created blocks
     for (var i = 0; i < rects.length; i++) {
             var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-            if (overlapTest(c, rects[i])) {
+            if (overlap(c, rects[i])) {
                 if (vx < 0)
                     vx = rects[i].x + rects[i].w - p.x;
                     else if (vx > 0)
                         vx = rects[i].x - p.x - p.w;
             }
-            if (overlapTest(c, diam)) {
+            if (overlap(c, diam)) {
                 gameComplete = true;
+            }
+    }
+    for (var i = 0; i < rectsCreated.length; i++) {
+            var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
+            if (overlap(c, rectsCreated[i])) {
+                if (vx < 0)
+                    vx = rectsCreated[i].x + rectsCreated[i].w - p.x;
+                    else if (vx > 0)
+                        vx = rectsCreated[i].x - p.x - p.w;
             }
     }
     p.x += vx;
 
-    // move player along y axis
+    // move player along y axis and check created blocks
     for (var i = 0; i < rects.length; i++) {
             var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
-            if (overlapTest(c, rects[i])) {
+            if (overlap(c, rects[i])) {
                 if (vy < 0)
                     vy = rects[i].y + rects[i].h - p.y;
                     else if (vy > 0)
                         vy = rects[i].y - p.y - p.h;
             }
-            if (overlapTest(c, diam)) {
+            if (overlap(c, diam)) {
+                gameComplete = true;
+            }
+    }
+    for (var i = 0; i < rectsCreated.length; i++) {
+            var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+            if (overlap(c, rectsCreated[i])) {
+                if (vy < 0)
+                    vy = rectsCreated[i].y + rectsCreated[i].h - p.y;
+                    else if (vy > 0)
+                        vy = rectsCreated[i].y - p.y - p.h;
+            }
+            if (overlap(c, diam)) {
                 gameComplete = true;
             }
     }
@@ -205,13 +235,13 @@ function movePlayer(p, vx, vy) {
     // spike collisions
     for (var n = 0; n < spikes.length; n++) {
         var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-        if (overlapTest(c, spikes[n])) {
+        if (overlap(c, spikes[n])) {
             gameOver = true;
         }
     }
     
     // snake collision
-    if (overlapTest(c, snake)) {
+    if (overlap(c, snake)) {
         gameOver = true;
     }
 }
@@ -220,10 +250,17 @@ function movePlayer(p, vx, vy) {
 // move the enemy along vx then along vy, but only move
 // as far as we can without colliding with a solid rectangle
 function moveEnemy(p, vx, vy) {
+    // remove the created rectangle that collided with the enemy
+    for (var i = 0; i < rectsCreated.length; i++) {
+        var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+        if(overlap(c, rectsCreated[i]))
+            rectsCreated.splice(i, 1);
+    }
+    
     // move enemy along x axis
     for (var i = 0; i < rects.length; i++) {
         var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-        if (overlapTest(c, rects[i])) {
+        if (overlapEnemy(c, rects[i])) {
             if (vx < 0) {
                 vx = rects[i].x + rects[i].w - p.x;
                 snake.velocity.x *= -1;
@@ -239,7 +276,7 @@ function moveEnemy(p, vx, vy) {
     // move enemy along y axis
     for (var i = 0; i < rects.length; i++) {
         var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
-        if (overlapTest(c, rects[i])) {
+        if (overlapEnemy(c, rects[i])) {
             if (vy < 0) {
                 vy = rects[i].y + rects[i].h - p.y;
             }
@@ -330,6 +367,11 @@ function draw() {
         var r = rects[i];
         c.drawImage(blImg, r.x, r.y);
     }
+    
+    for (var i = 0; i < rectsCreated.length; i++) {
+        var r = rectsCreated[i];
+        c.drawImage(blImg, r.x, r.y);
+    }
 
     // draw diamond
     var dImg = document.getElementById('diamond');
@@ -342,8 +384,14 @@ function draw() {
         c.drawImage(sImg, s.x, s.y);
     }
     // draw snake
-    var snImg = document.getElementById('snake');
-    c.drawImage(snImg, snake.x, snake.y);
+    var snImg = document.getElementById('snake_l');
+    var snRImg = document.getElementById('snake_r');
+    if(snake.velocity.x > 0) {
+        c.drawImage(snRImg, snake.x, snake.y);
+    }
+    else {
+        c.drawImage(snImg, snake.x, snake.y);  
+    }
 
     if (gameComplete) {
         if (level == 3) {
@@ -372,6 +420,7 @@ function draw() {
 // reset the game
 function reset() {
     rects = [];
+    rectsCreated = [];
     spikes = [];
     startGame();
 }

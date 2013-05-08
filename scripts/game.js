@@ -119,7 +119,7 @@ function setLevelBlocks() {
                 var x = Math.floor((Math.random()*8)+3) *40;
                 var y = Math.floor((Math.random()*9)+2) *30;
                 
-                rects.push(rect(x, y, 20, 20))
+                rects.push(rect(x, y, 20, 20));
             }
             
             diam = diamond(560, 360, 20, 20);

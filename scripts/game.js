@@ -1,7 +1,7 @@
 var gameComplete = false, gameOver = false;
 var rects = [], spikes = [], rectsCreated = [];
-var GAME_END = 4;
-var diam = diamond(560, 360, 20, 20);
+var GAME_END = 10;
+var diam = null;
 var snake = null;
 var player;
 var level;
@@ -77,7 +77,6 @@ function startGame() {
     // initial platform for player
     rects.push(rect(20, 100, 20, 20));
     rects.push(rect(40, 100, 20, 20));
-    rects.push(rect(60, 100, 20, 20));
 
     // horizontal blocks and spikes
     for (var i = 0; i < 620; i += 20) {
@@ -112,21 +111,21 @@ function startGame() {
 
 
 function setLevelBlocks() {
+    document.getElementById('levelNum').innerHTML = level;
     switch (level) {
-        case 1:
-            rects.push(rect(120, 300, 20, 20));
-            rects.push(rect(140, 300, 20, 20));
-            rects.push(rect(160, 300, 20, 20));
-
-            rects.push(rect(260, 100, 20, 20));
-            rects.push(rect(280, 100, 20, 20));
-            rects.push(rect(300, 100, 20, 20));
-
-            rects.push(rect(400, 300, 20, 20));
-            rects.push(rect(420, 300, 20, 20));
-            rects.push(rect(440, 300, 20, 20));
+        default:
+            for (var  i = 0; i < 12;  i++)
+            {
+                var x = Math.floor((Math.random()*8)+3) *40;
+                var y = Math.floor((Math.random()*9)+2) *30;
+                
+                rects.push(rect(x, y, 20, 20))
+            }
+            
+            diam = diamond(560, 360, 20, 20);
             break;
-        case 2:
+        case 9:
+            rects.push(rect(180, 260, 20, 20));
             rects.push(rect(200, 260, 20, 20));
             rects.push(rect(220, 260, 20, 20));
             rects.push(rect(240, 260, 20, 20));
@@ -138,24 +137,9 @@ function setLevelBlocks() {
             rects.push(rect(360, 260, 20, 20));
 
             snake = snakeEnemy(320, 245, 30, 15);
+            diam = diamond(560, 360, 20, 20);
             break;
-        case 3:
-            rects.push(rect(110, 330, 20, 20));
-            rects.push(rect(170, 320, 20, 20));
-
-            rects.push(rect(255, 160, 20, 20));
-            rects.push(rect(280, 155, 20, 20));
-            rects.push(rect(305, 160, 20, 20));
-
-            rects.push(rect(290, 315, 20, 20));
-            rects.push(rect(330, 320, 20, 20));
-            rects.push(rect(370, 310, 20, 20));
-
-            rects.push(rect(370, 220, 20, 20));
-            rects.push(rect(420, 200, 20, 20));
-            rects.push(rect(470, 220, 20, 20));
-            break;
-        case 4:
+        case 10:
             rects.push(rect(120, 180, 20, 20));
             spikes.push(spike(120, 160, 20, 20));
 
@@ -176,6 +160,7 @@ function setLevelBlocks() {
 
             rects.push(rect(440, 180, 20, 20));
             spikes.push(spike(440, 160, 20, 20));
+            diam = diamond(560, 360, 20, 20);
             break;
     }
 }

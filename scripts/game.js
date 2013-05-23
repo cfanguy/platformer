@@ -1,6 +1,6 @@
 var gameComplete = false, gameOver = false;
 var rects = [], spikes = [], rectsCreated = [];
-var GAME_END = 10;
+var GAME_END = 10, INITIAL_BLOCKS = 10;
 var diam = null;
 var snake = null;
 var player;
@@ -56,7 +56,7 @@ function setClickEvent() {
 
 // starts and resets the game
 function startGame() {
-    blockCount = 10;
+    blockCount = INITIAL_BLOCKS;
     document.getElementById("blockNum").innerText = blockCount;
 
     setLevelBlocks();
@@ -73,6 +73,24 @@ function startGame() {
         snake.velocity.x = -2;
         snake.velocity.y = 1;
     }
+
+    // set the elements
+    var l = document.getElementById('left');
+    var r = document.getElementById('right');
+    var j = document.getElementById('jump');
+
+    // add touch events to each element
+    l.addEventListener('touchstart', function (event) { left(event, true); }, false);
+    l.addEventListener('touchend', function (event) { left(event, false); }, false);
+    r.addEventListener('touchstart', function (event) { right(event, true); }, false);
+    r.addEventListener('touchend', function (event) { right(event, false); }, false);
+    j.addEventListener('touchstart', function (event) { jump(event, true); }, false);
+    j.addEventListener('touchend', function (event) { jump(event, false); }, false);
+}
+
+
+function setLevelBlocks() {
+    document.getElementById('levelNum').innerHTML = level;
 
     // initial platform for player
     rects.push(rect(20, 100, 20, 20));
@@ -95,23 +113,6 @@ function startGame() {
         rects.push(rect(580, i, 20, 20));
     }
 
-    // set the elements
-    var l = document.getElementById('left');
-    var r = document.getElementById('right');
-    var j = document.getElementById('jump');
-
-    // add touch events to each element
-    l.addEventListener('touchstart', function (event) { left(event, true); }, false);
-    l.addEventListener('touchend', function (event) { left(event, false); }, false);
-    r.addEventListener('touchstart', function (event) { right(event, true); }, false);
-    r.addEventListener('touchend', function (event) { right(event, false); }, false);
-    j.addEventListener('touchstart', function (event) { jump(event, true); }, false);
-    j.addEventListener('touchend', function (event) { jump(event, false); }, false);
-}
-
-
-function setLevelBlocks() {
-    document.getElementById('levelNum').innerHTML = level;
     switch (level) {
         default:
             for (var  i = 0; i < 12;  i++)
@@ -330,7 +331,8 @@ function jump(e,bool) {
     direction.up= bool;
 }
 
-// Updates the state of the game for the next frame
+
+// updates the state of the game for the next frame
 function update() {
     if ((!!keys[68] - !!keys[65]) != 0) {
         player.velocity.x = 3 * (!!keys[68] - !!keys[65]); // right - left
@@ -358,15 +360,15 @@ function update() {
 }
 
 
-// Renders a frame
+// renders a frame
 function draw() {
     var c = document.getElementById('screen').getContext('2d');
 
-    // Draw background
+    // draw background
     c.fillStyle = '#000';
     c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 
-    // Draw player
+    // draw player
     if (!gameOver) {
         if (player.velocity.x > 0)
             img = document.getElementById("player_r");
@@ -376,16 +378,18 @@ function draw() {
         c.drawImage(img, player.x - 6, player.y - 5);
     }
 
-    // Draw levels
+    // draw levels
     var blImg = document.getElementById("block");
     for (var i = 0; i < rects.length; i++) {
         var r = rects[i];
         c.drawImage(blImg, r.x, r.y);
     }
     
+    // draw created blocks
+    var crImg = document.getElementById("created");
     for (var i = 0; i < rectsCreated.length; i++) {
         var r = rectsCreated[i];
-        c.drawImage(blImg, r.x, r.y);
+        c.drawImage(crImg, r.x, r.y);
     }
 
     // draw diamond
@@ -420,7 +424,7 @@ function draw() {
             c.drawImage(cImg, 100, 60);
             level++;
 
-            setTimeout(reset, 1500);
+            setTimeout(nextLevel, 1500);
         }
     };
 
@@ -435,12 +439,28 @@ function draw() {
 
 
 // reset the game
-function reset() {
+function nextLevel() {
     rects = [];
     rectsCreated = [];
     spikes = [];
     snake = null;
     startGame();
+}
+
+
+// reset the player position for a level reset
+function reset() {
+    rectsCreated = [];
+
+    gameComplete = false;
+    gameOver = false;
+
+    player = rect(20, 20, 26, 34);
+    player.velocity = { x: 0, y: 0 };
+    player.onFloor = false;
+
+    blockCount = INITIAL_BLOCKS;
+    document.getElementById("blockNum").innerText = blockCount;
 }
 
 

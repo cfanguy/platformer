@@ -36,19 +36,34 @@ function snakeEnemy(x, y, w, h) {
 // set the mouse click event to create blocks
 function setClickEvent() {
     $("#screen").click(function (e) {
-        if (blockCount > 0) {
+        var createBlock = true;
+
+        var imgLeft = $(this).offset().left;
+        var clickLeft = e.pageX;
+        var x = clickLeft - imgLeft;
+        var blockX = x - 10;
+
+        var imgTop = $(this).offset().top;
+        var clickTop = e.pageY;
+        var y = clickTop - imgTop;
+        var blockY = y - 10;
+
+        for (var i = 0; i < rectsCreated.length; i++) {
+            if (x > rectsCreated[i].x && x < rectsCreated[i].x + rectsCreated[i].w &&
+                y > rectsCreated[i].y && y < rectsCreated[i].y + rectsCreated[i].h)
+            {
+                blockCount++;
+                document.getElementById("blockNum").innerText = blockCount;
+                createBlock = false;
+                rectsCreated.splice(i, 1);
+            }
+        }
+
+        if (blockCount > 0 && createBlock) {
             blockCount--;
             document.getElementById("blockNum").innerText = blockCount;
 
-            var imgLeft = $(this).offset().left;
-            var clickLeft = e.pageX;
-            var x = clickLeft - imgLeft;
-
-            var imgTop = $(this).offset().top;
-            var clickTop = e.pageY;
-            var y = clickTop - imgTop;
-
-            rectsCreated.push(rectCreated(x - 10, y - 10, 20, 20));
+            rectsCreated.push(rectCreated(blockX, blockY, 20, 20));
         }
     });
 }

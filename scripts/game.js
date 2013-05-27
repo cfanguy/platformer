@@ -3,9 +3,11 @@ var rects = [], spikes = [], rectsCreated = [];
 var GAME_END = 10, INITIAL_BLOCKS = 10;
 var diam = null;
 var snake = null;
+var fish = [];
 var player;
 var level;
 var blockCount;
+var score = 0;
 
 // Record which key codes are currently pressed
 var keys = {};
@@ -29,6 +31,9 @@ function spike(x, y, w, h) {
     return { x: x, y: y, w: w, h: h };
 }
 function snakeEnemy(x, y, w, h) {
+    return { x: x, y: y, w: w, h: h };
+}
+function fishEnemy(x, y, w, h) {
     return { x: x, y: y, w: w, h: h };
 }
 
@@ -71,6 +76,8 @@ function setClickEvent() {
 
 // starts and resets the game
 function startGame() {
+    document.getElementById('levelNum').innerHTML = level == -1 ? "Fish" : level;
+
     blockCount = INITIAL_BLOCKS;
     document.getElementById("blockNum").innerText = blockCount;
 
@@ -104,9 +111,38 @@ function startGame() {
 }
 
 
-function setLevelBlocks() {
-    document.getElementById('levelNum').innerHTML = level;
+// starts the fish level variety
+function startFishGame() {
+    document.getElementById('levelNum').innerHTML = level == -1 ? "Fish" : level;
 
+    blockCount = INITIAL_BLOCKS;
+    document.getElementById("blockNum").innerText = blockCount;
+
+    setFishBlocks();
+
+    gameComplete = false;
+    gameOver = false;
+
+    player = rect(20, 20, 26, 34);
+    player.velocity = { x: 0, y: 0 };
+    player.onFloor = false;
+    
+    // set the elements
+    var l = document.getElementById('left');
+    var r = document.getElementById('right');
+    var j = document.getElementById('jump');
+
+    // add touch events to each element
+    l.addEventListener('touchstart', function (event) { left(event, true); }, false);
+    l.addEventListener('touchend', function (event) { left(event, false); }, false);
+    r.addEventListener('touchstart', function (event) { right(event, true); }, false);
+    r.addEventListener('touchend', function (event) { right(event, false); }, false);
+    j.addEventListener('touchstart', function (event) { jump(event, true); }, false);
+    j.addEventListener('touchend', function (event) { jump(event, false); }, false);
+}
+
+
+function setLevelBlocks() {
     // initial platform for player
     rects.push(rect(20, 100, 20, 20));
     rects.push(rect(40, 100, 20, 20));
@@ -182,6 +218,37 @@ function setLevelBlocks() {
 }
 
 
+function setFishBlocks() {
+    // initial platform for player
+    rectsCreated.push(rect(20, 100, 20, 20));
+    rectsCreated.push(rect(40, 100, 20, 20));
+
+    // horizontal blocks and spikes
+    for (var i = 0; i < 620; i += 20) {
+        rects.push(rect(i, 0, 20, 20));
+        if (i > 560 || i < 20) {
+            rects.push(rect(i, 380, 20, 20));
+        }
+        else {
+            spikes.push(spike(i, 380, 20, 20));
+        }
+    }
+
+    // vertical blocks
+    for (var i = 0; i < 380; i += 20) {
+        rects.push(rect(0, i, 20, 20));
+        rects.push(rect(580, i, 20, 20));
+    }
+
+    fish.push(fishEnemy(200, 200, 25, 25));
+    fish[0].velocity = { x: 0, y: 0 };
+    fish.push(fishEnemy(300, 220, 25, 25));
+    fish[1].velocity = { x: 0, y: 0 };
+    fish.push(fishEnemy(400, 200, 25, 25));
+    fish[2].velocity = { x: 0, y: 0 };
+}
+
+
 // returns true if and only if a and b overlap
 function overlap(a, b) {
     return a.x < b.x + b.w && a.x + a.w > b.x &&
@@ -209,8 +276,10 @@ function movePlayer(p, vx, vy) {
                 vx = rects[i].x - p.x - p.w;
             }
         }
-        if (overlap(c, diam)) {
-            gameComplete = true;
+        if (diam != null) {
+            if (overlap(c, diam)) {
+                gameComplete = true;
+            }
         }
     }
     for (var i = 0; i < rectsCreated.length; i++) {
@@ -237,8 +306,10 @@ function movePlayer(p, vx, vy) {
                     vy = rects[i].y - p.y - p.h;
                 }
             }
-            if (overlap(c, diam)) {
-                gameComplete = true;
+            if (diam != null) {
+                if (overlap(c, diam)) {
+                    gameComplete = true;
+                }
             }
     }
     for (var i = 0; i < rectsCreated.length; i++) {
@@ -251,8 +322,10 @@ function movePlayer(p, vx, vy) {
                 vy = rectsCreated[i].y - p.y - p.h;
             }
         }
-        if (overlap(c, diam)) {
-            gameComplete = true;
+        if (diam != null) {
+            if (overlap(c, diam)) {
+                gameComplete = true;
+            }
         }
     }
     p.y += vy;
@@ -274,7 +347,7 @@ function movePlayer(p, vx, vy) {
 }
 
 
-// move the enemy along vx then along vy, but only move
+// move the snake enemy along vx then along vy, but only move
 // as far as we can without colliding with a solid rectangle
 function moveEnemy(p, vx, vy) {
     // remove the created rectangle that collided with the enemy
@@ -320,6 +393,29 @@ function moveEnemy(p, vx, vy) {
 }
 
 
+// move the fish and destory blocks that collide
+function moveFish(p, vx, vy) {
+    // remove the created rectangle that collided with the enemy
+    for (var i = 0; i < rectsCreated.length; i++) {
+        var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+        if (overlap(c, rectsCreated[i]))
+            rectsCreated.splice(i, 1);
+    }
+
+    // move enemy along x axis
+    for (var i = 0; i < rects.length; i++) {
+        var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
+    }
+    p.x += vx;
+
+    // move enemy along y axis
+    for (var i = 0; i < rects.length; i++) {
+        var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+    }
+    p.y += vy;
+}
+
+
 // set the left button move event
 function left(e,bool) {
     if(e.target.localName != 'select'){
@@ -355,7 +451,12 @@ function update() {
     else {
         player.velocity.x = 3 * (!!direction.right - !!direction.left); // right - left
     }
-    player.velocity.y += 1; // Acceleration due to gravity
+    if (level == -1) {
+        player.velocity.y += 0.2;
+    }
+    else {
+        player.velocity.y += 1; // Acceleration due to gravity
+    }
 
     // Move the player and detect collisions
     var expectedY = player.y + player.velocity.y;
@@ -372,6 +473,27 @@ function update() {
     if (player.onFloor && (keys[87] || direction.up)) {
         player.velocity.y = -13;
     }
+
+    if (level == -1) {
+        for (var i = 0; i < fish.length; i++) {
+            if (player.x < fish[i].x - (i * 6 + i)) {
+                fish[i].velocity.x = -1;
+            }
+            else {
+                fish[i].velocity.x = 1;
+            }
+            if (player.y < fish[i].y - (i * 6 + i)) {
+                fish[i].velocity.y = -1;
+            }
+            else {
+                fish[i].velocity.y = 1;
+            }
+            moveFish(fish[i], fish[i].velocity.x, fish[i].velocity.y);
+        }
+
+        score++;
+        document.getElementById('levelNum').innerHTML = score;
+    }
 }
 
 
@@ -380,7 +502,7 @@ function draw() {
     var c = document.getElementById('screen').getContext('2d');
 
     // draw background
-    c.fillStyle = '#000';
+    c.fillStyle = level == -1 ? '#000090' : '#000';
     c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 
     // draw player
@@ -409,7 +531,9 @@ function draw() {
 
     // draw diamond
     var dImg = document.getElementById('diamond');
-    c.drawImage(dImg, diam.x, diam.y);
+    if (diam != null) {
+        c.drawImage(dImg, diam.x, diam.y);
+    }
 
     // draw spikes
     var sImg = document.getElementById('spike');
@@ -426,6 +550,19 @@ function draw() {
         }
         else {
             c.drawImage(snImg, snake.x, snake.y);
+        }
+    }
+    // draw fish
+    var fImg = document.getElementById('fish_l');
+    var fRImg = document.getElementById('fish_r');
+    if (fish.length > 0) {
+        for (var i = 0; i < fish.length; i++) {
+            if (fish[i].velocity.x > 0) {
+                c.drawImage(fRImg, fish[i].x, fish[i].y);
+            }
+            else {
+                c.drawImage(fImg, fish[i].x, fish[i].y);
+            }
         }
     }
 
@@ -456,10 +593,34 @@ function draw() {
 // reset the game
 function nextLevel() {
     rects = [];
+    fish = [];
     rectsCreated = [];
     spikes = [];
     snake = null;
     startGame();
+
+    document.getElementById('scoreLevel').innerHTML = 'Level: ';
+
+    document.getElementById('reset').disabled = false;
+    document.getElementById('reset').style.display = 'inline';
+}
+
+
+// start the fish level
+function fishLevel() {
+    rects = [];
+    fish = [];
+    rectsCreated = [];
+    spikes = [];
+    snake = null;
+    diam = null;
+    level = -1;
+    startFishGame();
+
+    document.getElementById('scoreLevel').innerHTML = 'Score: ';
+
+    document.getElementById('reset').disabled = true;
+    document.getElementById('reset').style.display = 'none';
 }
 
 

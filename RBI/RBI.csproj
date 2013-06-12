@@ -49,6 +49,7 @@
     <Content Include="img\diamond_end.PNG" />
     <Content Include="img\fish.PNG" />
     <Content Include="img\fish_r.PNG" />
+    <Content Include="img\gameover _fish.png" />
     <Content Include="img\gameover.png" />
     <Content Include="img\next_level.PNG" />
     <Content Include="img\player_dead.png" />

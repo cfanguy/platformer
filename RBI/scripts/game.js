@@ -197,7 +197,7 @@ function setLevelBlocks() {
 			res.rects.push(rect(340, 260, 20, 20));
 			res.rects.push(rect(360, 260, 20, 20));
 
-			res.snake = res.snakeEnemy(320, 245, 30, 15);
+			res.snake = snakeEnemy(320, 245, 30, 15);
 			res.diam = diamond(560, 360, 20, 20);
 			break;
 		case 10:
@@ -585,7 +585,7 @@ function draw() {
 			c.drawImage(cImg, 100, 60);
 			res.level++;
 
-			setTimeout(nextlevel, 1500);
+			setTimeout(nextLevel, 1500);
 		}
 	};
 
@@ -606,7 +606,7 @@ function draw() {
 
 
 // reset the game
-function nextlevel() {
+function nextLevel() {
 	res.rects = [];
 	res.fish = [];
 	res.rectsCreated = [];

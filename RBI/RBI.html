@@ -31,13 +31,13 @@
             </div>
         </div>
         <div style="width:600px;margin-left:auto;margin-right:auto;">
-            <input id="left" type="button" onmousedown="javascript:direction.left = true;" onmouseup="javascript:direction.left = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&lt;&lt;" />
-            <input id="right" type="button" onmousedown="javascript:direction.right = true;" onmouseup="javascript:direction.right = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&gt;&gt;" />
-            <input id="jump" type="button" onmousedown="javascript:direction.up = true;" onmouseup="javascript:direction.up = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:right;color: black;" value="Jump" />
+            <input id="left" type="button" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&lt;&lt;" />
+            <input id="right" type="button" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&gt;&gt;" />
+            <input id="jump" type="button" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:right;color: black;" value="Jump" />
         </div>
 
         <div style="width:600px;margin-left:auto;margin-right:auto;margin-top:120px;">
-            <input id="cave" type="button" onmousedown="javascript:level=1;nextLevel();" value="Cave Levels" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
+            <input id="cave" type="button" onmousedown="javascript:res.level=1;nextLevel();" value="Cave Levels" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
             <input id="fish" type="button" onmousedown="javascript:fishLevel();" value="Fish Level" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
             <input id="reset" type="button" onmousedown="javascript:reset();" value="Reset Level" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
         </div>

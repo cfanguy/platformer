@@ -448,7 +448,7 @@ function jump(e,bool) {
 	if(e.target.localName != 'select'){
 		e.preventDefault(); 
 	}
-	direction.up= bool;
+	res.direction.up = bool;
 }
 
 

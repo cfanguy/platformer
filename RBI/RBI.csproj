@@ -64,6 +64,9 @@
     <Content Include="img\spikes.png" />
     <Content Include="RBI.aspx" />
     <Content Include="scripts\game.js" />
+    <Content Include="scripts\game.min.js">
+      <DependentUpon>game.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +77,11 @@
     <Compile Include="RBI.aspx.designer.cs">
       <DependentUpon>RBI.aspx</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="scripts\game.min.js.map">
+      <DependentUpon>game.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

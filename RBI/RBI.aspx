@@ -1,10 +1,16 @@
-<html>
-    <head>
-        <title>
-                RBI
-        </title>
-    </head>
-    <body style="background-color: black;">
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RBI.aspx.cs" Inherits="RBI.RBI" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        RBI
+    </title>
+</head>
+<body style="background-color: black;">
+    <form id="form1" runat="server">
+    <div>
         <img id="player_r" src="img/player_r.png" alt="r_pl" style="display:none"/>
         <img id="player_l" src="img/player_l.png" alt="l_pl" style="display:none"/>
         <img id="player_dead" src="img/player_dead.png" alt="d_pl" style="display:none"/>
@@ -44,5 +50,7 @@
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type="text/javascript" src="scripts/game.js"></script>
-    </body>
+    </div>
+    </form>
+</body>
 </html>

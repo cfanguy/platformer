@@ -39,6 +39,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="img\bandit.PNG" />
@@ -49,8 +53,8 @@
     <Content Include="img\diamond_end.PNG" />
     <Content Include="img\fish.PNG" />
     <Content Include="img\fish_r.PNG" />
-    <Content Include="img\gameover _fish.png" />
     <Content Include="img\gameover.png" />
+    <Content Include="img\gameover_fish.png" />
     <Content Include="img\next_level.PNG" />
     <Content Include="img\player_dead.png" />
     <Content Include="img\player_l.png" />
@@ -58,11 +62,18 @@
     <Content Include="img\snake1.PNG" />
     <Content Include="img\snake1_r.PNG" />
     <Content Include="img\spikes.png" />
-    <Content Include="RBI.html" />
+    <Content Include="RBI.aspx" />
     <Content Include="scripts\game.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RBI.aspx.cs">
+      <DependentUpon>RBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RBI.aspx.designer.cs">
+      <DependentUpon>RBI.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

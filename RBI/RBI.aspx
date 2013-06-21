@@ -37,9 +37,9 @@
             </div>
         </div>
         <div style="width:600px;margin-left:auto;margin-right:auto;">
-            <input id="left" type="button" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&lt;&lt;" />
-            <input id="right" type="button" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:left;color: black;" value="&gt;&gt;" />
-            <input id="jump" type="button" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;" style="background-color:white;cursor:pointer;font-size: 50px;float:right;color: black;" value="Jump" />
+            <input id="left" type="button" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;" style="background-color:white;cursor:pointer;font-size: 40px;float:left;color: black;" value="&lt;&lt; (A)" />
+            <input id="right" type="button" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 40px;float:left;color: black;" value="(D) &gt;&gt;" />
+            <input id="jump" type="button" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;" style="background-color:white;cursor:pointer;font-size: 40px;float:right;color: black;" value="Jump (W)" />
         </div>
 
         <div style="width:600px;margin-left:auto;margin-right:auto;margin-top:120px;">

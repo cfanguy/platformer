@@ -3,13 +3,18 @@ var res = {};
 $(function () {
 	res.gameComplete = false;
 	res.gameOver = false;
+	res.lavaCheck1 = true;
+	res.lavaCheck2 = true;
 	res.rects = [];
-	res.spikes = [];
+	res.killblocks = [];
 	res.rectsCreated = [];
-	res.GAME_END = 10;
+	res.GAME_END_CAVE = 10;
+	res.GAME_END_LAVA = 20;
 	res.INITIAL_BLOCKS = 10;
 	res.diam = null;
 	res.snake = null;
+	res.lavaB_1 = null;
+	res.lavaB_2 = null;
 	res.fish = [];
 	res.player;
 	res.level;
@@ -36,7 +41,7 @@ function rectCreated(x, y, w, h) {
 function diamond(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
 }
-function spike(x, y, w, h) {
+function killblock(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
 }
 function snakeEnemy(x, y, w, h) {
@@ -44,6 +49,9 @@ function snakeEnemy(x, y, w, h) {
 }
 function fishEnemy(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
+}
+function lavaBall(x, y, w, h) {
+    return { x: x, y: y, w: w, h: h };
 }
 
 
@@ -83,14 +91,14 @@ function setClickEvent() {
 }
 
 
-// starts and resets the game
-function startGame() {
+// starts the cave level variety
+function startCaveGame() {
 	document.getElementById('levelNum').innerHTML = res.level == -1 ? "fish" : res.level;
 
 	res.blockCount = res.INITIAL_BLOCKS;
 	document.getElementById("blockNum").innerText = res.blockCount;
 
-	setLevelBlocks();
+	setCaveBlocks();
 
 	res.gameComplete = false;
 	res.gameOver = false;
@@ -120,7 +128,7 @@ function startGame() {
 }
 
 
-// starts the res.fish res.level variety
+// starts the fish level variety
 function startFishGame() {
 	document.getElementById('levelNum').innerHTML = res.level == -1 ? "res.fish" : res.level;
 
@@ -151,19 +159,63 @@ function startFishGame() {
 }
 
 
-function setLevelBlocks() {
-	// initial platform for res.player
+// starts the lava level variety
+function startLavaGame() {
+    document.getElementById('levelNum').innerHTML = res.level == -1 ? "fish" : res.level;
+
+    res.blockCount = res.INITIAL_BLOCKS;
+    document.getElementById("blockNum").innerText = res.blockCount;
+
+    setLavaBlocks();
+
+    res.gameComplete = false;
+    res.gameOver = false;
+
+    res.player = rect(20, 20, 26, 34);
+    res.player.velocity = { x: 0, y: 0 };
+    res.player.onFloor = false;
+
+    if (res.lavaB_1 == null) {
+        res.lavaB_1 = new lavaBall(220, 382, 20, 20);
+        res.lavaB_1.velocity = { x: 0, y: 0 };
+        res.lavaB_1.velocity.x = 0;
+        res.lavaB_1.velocity.y = 0;
+    }
+    if (res.lavaB_2 == null) {
+        res.lavaB_2 = new lavaBall(400, 382, 20, 20);
+        res.lavaB_2.velocity = { x: 0, y: 0 };
+        res.lavaB_2.velocity.x = 0;
+        res.lavaB_2.velocity.y = 0;
+    }
+
+    // set the elements
+    var l = document.getElementById('left');
+    var r = document.getElementById('right');
+    var j = document.getElementById('jump');
+
+    // add touch events to each element
+    l.addEventListener('touchstart', function (event) { left(event, true); }, false);
+    l.addEventListener('touchend', function (event) { left(event, false); }, false);
+    r.addEventListener('touchstart', function (event) { right(event, true); }, false);
+    r.addEventListener('touchend', function (event) { right(event, false); }, false);
+    j.addEventListener('touchstart', function (event) { jump(event, true); }, false);
+    j.addEventListener('touchend', function (event) { jump(event, false); }, false);
+}
+
+
+function setCaveBlocks() {
+	// initial platform for player
 	res.rects.push(rect(20, 100, 20, 20));
 	res.rects.push(rect(40, 100, 20, 20));
 
-	// horizontal blocks and res.spikes
+    // horizontal blocks and killblocks
 	for (var i = 0; i < 620; i += 20) {
 		res.rects.push(rect(i, 0, 20, 20));
-		if (i > 500 || i < 20) {
+		if (i > 520 || i < 20) {
 			res.rects.push(rect(i, 380, 20, 20));
 		}
 		else {
-			res.spikes.push(spike(i, 380, 20, 20));
+		    res.killblocks.push(killblock(i, 380, 20, 20));
 		}
 	}
 
@@ -177,8 +229,8 @@ function setLevelBlocks() {
 		default:
 			for (var  i = 0; i < 12;  i++)
 			{
-				var x = Math.floor((Math.random()*10)+3) *40;
-				var y = Math.floor((Math.random()*9)+2) *30;
+			    var x = Math.floor((Math.random() * 10) + 3) * 40;
+			    var y = Math.floor((Math.random() * 9) + 2) * 30;
 				
 				res.rects.push(rect(x, y, 20, 20));
 			}
@@ -202,25 +254,25 @@ function setLevelBlocks() {
 			break;
 		case 10:
 			res.rects.push(rect(120, 180, 20, 20));
-			res.spikes.push(spike(120, 160, 20, 20));
+			res.killblocks.push(killblock(120, 160, 20, 20));
 
 			res.rects.push(rect(200, 280, 20, 20));
-			res.spikes.push(spike(200, 260, 20, 20));
+			res.killblocks.push(killblock(200, 260, 20, 20));
 
 			res.rects.push(rect(200, 100, 20, 20));
-			res.spikes.push(spike(200, 80, 20, 20));
+			res.killblocks.push(killblock(200, 80, 20, 20));
 
 			res.rects.push(rect(280, 180, 20, 20));
-			res.spikes.push(spike(280, 160, 20, 20));
+			res.killblocks.push(killblock(280, 160, 20, 20));
 
 			res.rects.push(rect(360, 100, 20, 20));
-			res.spikes.push(spike(360, 80, 20, 20));
+			res.killblocks.push(killblock(360, 80, 20, 20));
 
 			res.rects.push(rect(360, 280, 20, 20));
-			res.spikes.push(spike(360, 260, 20, 20));
+			res.killblocks.push(killblock(360, 260, 20, 20));
 
 			res.rects.push(rect(440, 180, 20, 20));
-			res.spikes.push(spike(440, 160, 20, 20));
+			res.killblocks.push(killblock(440, 160, 20, 20));
 			res.diam = diamond(560, 360, 20, 20);
 			break;
 	}
@@ -228,18 +280,18 @@ function setLevelBlocks() {
 
 
 function setFishBlocks() {
-	// initial platform for res.player
+	// initial platform for player
 	res.rectsCreated.push(rect(20, 100, 20, 20));
 	res.rectsCreated.push(rect(40, 100, 20, 20));
 
-	// horizontal blocks and res.spikes
+    // horizontal blocks and killblocks
 	for (var i = 0; i < 620; i += 20) {
 		res.rects.push(rect(i, 0, 20, 20));
 		if (i > 560 || i < 20) {
 			res.rects.push(rect(i, 380, 20, 20));
 		}
 		else {
-			res.spikes.push(spike(i, 380, 20, 20));
+		    res.killblocks.push(killblock(i, 380, 20, 20));
 		}
 	}
 
@@ -258,6 +310,57 @@ function setFishBlocks() {
 }
 
 
+function setLavaBlocks() {
+    // initial platform for player
+    res.rects.push(rect(20, 100, 20, 20));
+    res.rects.push(rect(40, 100, 20, 20));
+
+    // horizontal blocks and killblocks
+    for (var i = 0; i < 620; i += 20) {
+        res.rects.push(rect(i, 0, 20, 20));
+        if (i > 520 || i < 20) {
+            res.rects.push(rect(i, 380, 20, 20));
+        }
+        else {
+            res.killblocks.push(killblock(i, 380, 20, 20));
+        }
+    }
+
+    // vertical blocks
+    for (var i = 0; i < 380; i += 20) {
+        res.rects.push(rect(0, i, 20, 20));
+        res.rects.push(rect(580, i, 20, 20));
+    }
+
+    switch (res.level) {
+        default:
+            for (var i = 0; i < 8; i++) {
+                var x, y;
+
+                x = Math.floor((Math.random() * 10) + 3) * 40;
+                y = Math.floor((Math.random() * 9) + 2) * 30;
+
+                // do not set blocks on these x coordinates
+                if ((x > 185 && x < 255) || (x >= 365 && x <= 435)) {
+                    i--;
+                }
+                else {
+                    res.rects.push(rect(x, y, 20, 20));
+                }
+            }
+
+            res.diam = diamond(560, 360, 20, 20);
+            break;
+        case 20:
+            res.rects.push(rect(200, 100, 20, 20));
+            res.rects.push(rect(360, 100, 20, 20));
+
+            res.diam = diamond(560, 360, 20, 20);
+            break;
+    }
+}
+
+
 // returns true if and only if a and b overlap
 function overlap(a, b) {
 	return a.x < b.x + b.w && a.x + a.w > b.x &&
@@ -271,7 +374,7 @@ function overlapEnemy(a, b) {
 }
 
 
-// move the res.player p along vx then along vy, but only move
+// move the player p along vx then along vy, but only move
 // as far as we can without colliding with a solid rectangle
 function moveplayer(p, vx, vy) {
 	// move res.player along x axis and check created blocks
@@ -339,10 +442,10 @@ function moveplayer(p, vx, vy) {
 	}
 	p.y += vy;
 
-	// spike collisions
-	for (var n = 0; n < res.spikes.length; n++) {
+	// killblock collisions
+	for (var n = 0; n < res.killblocks.length; n++) {
 		var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-		if (overlap(c, res.spikes[n])) {
+		if (overlap(c, res.killblocks[n])) {
 			res.gameOver = true;
 		}
 	}
@@ -353,10 +456,24 @@ function moveplayer(p, vx, vy) {
 			res.gameOver = true;
 		}
 	}
+
+    // lavaB_1 collision
+	if (res.lavaB_1 != null) {
+	    if (overlap(c, res.lavaB_1)) {
+	        res.gameOver = true;
+	    }
+	}
+
+    // lavaB_2 collision
+	if (res.lavaB_2 != null) {
+	    if (overlap(c, res.lavaB_2)) {
+	        res.gameOver = true;
+	    }
+	}
 }
 
 
-// move the res.snake enemy along vx then along vy, but only move
+// move the snake enemy along vx then along vy, but only move
 // as far as we can without colliding with a solid rectangle
 function moveEnemy(p, vx, vy) {
 	// remove the created rectangle that collided with the enemy
@@ -402,7 +519,7 @@ function moveEnemy(p, vx, vy) {
 }
 
 
-// move the res.fish and destory blocks that collide
+// move the fish and destroy blocks that collide
 function moveFish(p, vx, vy) {
 	// remove the created rectangle that collided with the enemy
 	for (var i = 0; i < res.rectsCreated.length; i++) {
@@ -422,6 +539,35 @@ function moveFish(p, vx, vy) {
 		var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
 	}
 	p.y += vy;
+}
+
+
+// move the lava ball vertically and destroy blocks that collide
+function moveLavaB(p, vx, vy) {
+    // remove the created rectangle that collided with the enemy
+    for (var i = 0; i < res.rectsCreated.length; i++) {
+        var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+        if (overlap(c, res.rectsCreated[i]))
+            res.rectsCreated.splice(i, 1);
+    }
+
+    // move enemy along y axis
+    for (var i = 0; i < res.rects.length; i++) {
+        var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
+    }
+    p.y += vy;
+
+    if (p.y < 40)
+    {
+        p.velocity.y = 3;
+    }
+    else
+    {
+        if (p.y > 380)
+        {
+            p.velocity.y = 0;
+        }
+    }
 }
 
 
@@ -470,9 +616,6 @@ function update() {
 	// Move the res.player and detect collisions
 	var expectedY = res.player.y + res.player.velocity.y;
 	moveplayer(res.player, res.player.velocity.x, res.player.velocity.y);
-	if (res.snake != null) {
-		moveEnemy(res.snake, res.snake.velocity.x, res.snake.velocity.y);
-	}
 	res.player.onFloor = (expectedY > res.player.y);
 	if (expectedY != res.player.y) {
 		res.player.velocity.y = 0;
@@ -481,6 +624,26 @@ function update() {
 	// Only jump when we're on the floor
 	if (res.player.onFloor && (res.keys[87] || res.direction.up)) {
 		res.player.velocity.y = -13;
+	}
+
+	if (res.snake != null) {
+	    moveEnemy(res.snake, res.snake.velocity.x, res.snake.velocity.y);
+	}
+	if (res.lavaB_1 != null) {
+	    moveLavaB(res.lavaB_1, res.lavaB_1.velocity.x, res.lavaB_1.velocity.y);
+	    if (res.lavaB_1.velocity.y == 0 && res.lavaCheck1)
+	    {
+	        setTimeout(function () { res.lavaB_1.velocity.y = -3; res.lavaCheck1 = true; }, Math.random() * 4500);
+	        res.lavaCheck1 = false;
+
+	    }
+	}
+	if (res.lavaB_2 != null) {
+	    moveLavaB(res.lavaB_2, res.lavaB_2.velocity.x, res.lavaB_2.velocity.y);
+	    if (res.lavaB_2.velocity.y == 0 && res.lavaCheck2) {
+	        setTimeout(function () { res.lavaB_2.velocity.y = -3; res.lavaCheck2 = true; }, Math.random() * 4500);
+	        res.lavaCheck2 = false;
+	    }
 	}
 
 	if (res.level == -1) {
@@ -510,8 +673,21 @@ function update() {
 function draw() {
 	var c = document.getElementById('screen').getContext('2d');
 
-	// draw background
-	c.fillStyle = res.level == -1 ? '#000090' : '#000';
+    // draw background
+	if (res.level == -1) {
+	    c.fillStyle = '#000090'
+	}
+	else
+	{
+	    if (res.level >= 1 && res.level <= 10)
+	    {
+	        c.fillStyle = '#000000'
+	    }
+	    else
+	    {
+	        c.fillStyle = '#200000'
+	    }
+	}
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 
 	// draw player
@@ -544,10 +720,17 @@ function draw() {
 		c.drawImage(dImg, res.diam.x, res.diam.y);
 	}
 
-	// draw spikes
-	var sImg = document.getElementById('spike');
-	for (var n = 0; n < res.spikes.length; n++) {
-		var s = res.spikes[n];
+    // draw killblocks
+	var sImg;
+	if (res.level < 11) {
+	    sImg = document.getElementById('spike');
+	}
+	else
+	{
+	    sImg = document.getElementById('lava');
+	}
+	for (var n = 0; n < res.killblocks.length; n++) {
+	    var s = res.killblocks[n];
 		c.drawImage(sImg, s.x, s.y);
 	}
 	// draw snake
@@ -574,9 +757,17 @@ function draw() {
 			}
 		}
 	}
+    // draw lava balls
+	var lbImg = document.getElementById('lava_ball');
+	if (res.lavaB_1 != null) {
+	    c.drawImage(lbImg, res.lavaB_1.x, res.lavaB_1.y);
+	}
+	if (res.lavaB_2 != null) {
+	    c.drawImage(lbImg, res.lavaB_2.x, res.lavaB_2.y);
+	}
 
 	if (res.gameComplete) {
-		if (res.level == res.GAME_END) {
+	    if (res.level == res.GAME_END_CAVE || res.level == res.GAME_END_LAVA) {
 			var cImg = document.getElementById('complete');
 			c.drawImage(cImg, 100, 60);
 		}
@@ -610,13 +801,17 @@ function nextLevel() {
 	res.rects = [];
 	res.fish = [];
 	res.rectsCreated = [];
-	res.spikes = [];
+	res.killblocks = [];
 	res.snake = null;
-	startGame();
+	if (res.level <= 10)
+	{
+	    res.lavaB_1 = null;
+	    res.lavaB_2 = null;
+	}
+	startCaveGame();
 
-	document.getElementById('scoreLevel').innerHTML = 'level: ';
+	document.getElementById('scoreLevel').innerHTML = 'Level: ';
 
-	document.getElementById('reset').disabled = false;
 	document.getElementById('reset').style.display = 'inline';
 }
 
@@ -626,16 +821,36 @@ function fishLevel() {
 	res.rects = [];
 	res.fish = [];
 	res.rectsCreated = [];
-	res.spikes = [];
+	res.killblocks = [];
 	res.snake = null;
 	res.diam = null;
+	res.lavaB_1 = null;
+	res.lavaB_2 = null;
 	res.level = -1;
 	startFishGame();
 
-	document.getElementById('scoreLevel').innerHTML = 'score: ';
+	document.getElementById('scoreLevel').innerHTML = 'Score: ';
 
-	document.getElementById('reset').disabled = true;
 	document.getElementById('reset').style.display = 'none';
+}
+
+
+// start the lava levels
+function lavaLevel() {
+    res.rects = [];
+    res.fish = [];
+    res.rectsCreated = [];
+    res.killblocks = [];
+    res.snake = null;
+    res.diam = null;
+    res.lavaB_1 = null;
+    res.lavaB_2 = null;
+    res.level = 11;
+    startLavaGame();
+
+    document.getElementById('scoreLevel').innerHTML = 'Level: ';
+
+    document.getElementById('reset').style.display = 'inline';
 }
 
 
@@ -667,5 +882,5 @@ window.onload = function () {
 	}, 1000 / 60);
 
 	setClickEvent();
-	startGame();
+	startCaveGame();
 };

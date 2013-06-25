@@ -16,6 +16,8 @@
         <img id="player_dead" src="img/player_dead.png" alt="d_pl" style="display:none"/>
         <img id="diamond" src="img/diamond_end.png" alt="diamond" style="display:none"/>
         <img id="spike" src="img/spikes.png" alt="spike" style="display:none"/>
+        <img id="lava" src="img/lava.png" alt="lava" style="display:none"/>
+        <img id="lava_ball" src="img/lava_ball.png" alt="lava_ball" style="display:none"/>
         <img id="snake_l" src="img/snake1.png" alt="snake" style="display: none"/>
         <img id="snake_r" src="img/snake1_r.png" alt="snake" style="display: none"/>
         <img id="fish_r" src="img/fish_r.png" alt="fish" style="display:none"/>
@@ -43,13 +45,17 @@
         </div>
 
         <div style="width:600px;margin-left:auto;margin-right:auto;margin-top:120px;">
-            <input id="cave" type="button" onmousedown="javascript:res.level=1;nextLevel();" value="Cave Levels" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
-            <input id="fish" type="button" onmousedown="javascript:fishLevel();" value="Fish Level" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
-            <input id="reset" type="button" onmousedown="javascript:resetLevel();" value="Reset Level" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
+            <div style="margin-bottom:50px;text-align:center">
+                <input type="button" id="reset" onmousedown="javascript:resetLevel();" value="Reset Level" style="background-color:white;cursor:pointer;font-size: 30px;color: black;"/>
+            </div>
+
+            <input id="fish" type="button" onmousedown="javascript:fishLevel();" value="Fish Level" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
+            <input id="cave" type="button" onmousedown="javascript:res.level=1;nextLevel();" value="Cave Levels" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
+            <input id="lavaLvl" type="button" onmousedown="javascript:lavaLevel();" value="Lava Levels" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
         </div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="scripts/game.min.js"></script>
+        <script src="scripts/game.js"></script>
     </div>
     </form>
 </body>

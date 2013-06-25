@@ -55,6 +55,8 @@
     <Content Include="img\fish_r.PNG" />
     <Content Include="img\gameover.png" />
     <Content Include="img\gameover_fish.png" />
+    <Content Include="img\lava.png" />
+    <Content Include="img\lava_ball.png" />
     <Content Include="img\next_level.PNG" />
     <Content Include="img\player_dead.png" />
     <Content Include="img\player_l.png" />

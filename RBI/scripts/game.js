@@ -72,8 +72,7 @@ function setClickEvent() {
 
 		for (var i = 0; i < res.rectsCreated.length; i++) {
 			if (x > res.rectsCreated[i].x && x < res.rectsCreated[i].x + res.rectsCreated[i].w &&
-				y > res.rectsCreated[i].y && y < res.rectsCreated[i].y + res.rectsCreated[i].h)
-			{
+				y > res.rectsCreated[i].y && y < res.rectsCreated[i].y + res.rectsCreated[i].h) {
 				res.blockCount++;
 				document.getElementById("blockNum").innerText = res.blockCount;
 				createBlock = false;
@@ -227,8 +226,7 @@ function setCaveBlocks() {
 
 	switch (res.level) {
 		default:
-			for (var  i = 0; i < 12;  i++)
-			{
+			for (var  i = 0; i < 12;  i++) {
 			    var x = Math.floor((Math.random() * 10) + 3) * 40;
 			    var y = Math.floor((Math.random() * 9) + 2) * 30;
 				
@@ -381,12 +379,14 @@ function moveplayer(p, vx, vy) {
 	for (var i = 0; i < res.rects.length; i++) {
 		var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
 		if (overlap(c, res.rects[i])) {
-			if (vx < 0) {
-				vx = res.rects[i].x + res.rects[i].w - p.x;
-			}
-			else if (vx > 0) {
-				vx = res.rects[i].x - p.x - p.w;
-			}
+		    if (vx < 0) {
+		        vx = res.rects[i].x + res.rects[i].w - p.x;
+		    }
+		    else {
+		        if (vx > 0) {
+		            vx = res.rects[i].x - p.x - p.w;
+		        }
+		    }
 		}
 		if (res.diam != null) {
 			if (overlap(c, res.diam)) {
@@ -397,12 +397,14 @@ function moveplayer(p, vx, vy) {
 	for (var i = 0; i < res.rectsCreated.length; i++) {
 		var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
 		if (overlap(c, res.rectsCreated[i])) {
-			if (vx < 0) {
-				vx = res.rectsCreated[i].x + res.rectsCreated[i].w - p.x;
-			}
-			else if (vx > 0) {
-				vx = res.rectsCreated[i].x - p.x - p.w;
-			}
+		    if (vx < 0) {
+		        vx = res.rectsCreated[i].x + res.rectsCreated[i].w - p.x;
+		    }
+		    else {
+		        if (vx > 0) {
+		            vx = res.rectsCreated[i].x - p.x - p.w;
+		        }
+		    }
 		}
 	}
 	p.x += vx;
@@ -487,14 +489,16 @@ function moveEnemy(p, vx, vy) {
 	for (var i = 0; i < res.rects.length; i++) {
 		var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
 		if (overlapEnemy(c, res.rects[i])) {
-			if (vx < 0) {
-				vx = res.rects[i].x + res.rects[i].w - p.x;
-				res.snake.velocity.x *= -1;
-			}
-			else if (vx > 0) {
-				vx = res.rects[i].x - p.x - p.w;
-				res.snake.velocity.x *= -1;
-			}
+		    if (vx < 0) {
+		        vx = res.rects[i].x + res.rects[i].w - p.x;
+		        res.snake.velocity.x *= -1;
+		    }
+		    else {
+		        if (vx > 0) {
+		            vx = res.rects[i].x - p.x - p.w;
+		            res.snake.velocity.x *= -1;
+		        }
+		    }
 		}
 	}
 	p.x += vx;
@@ -503,15 +507,16 @@ function moveEnemy(p, vx, vy) {
 	for (var i = 0; i < res.rects.length; i++) {
 		var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
 		if (overlapEnemy(c, res.rects[i])) {
-			if (vy < 0) {
-				vy = res.rects[i].y + res.rects[i].h - p.y;
-			}
-			else if (vy > 0) {
-				vy = res.rects[i].y - p.y - p.h;
-			}
+		    if (vy < 0) {
+		        vy = res.rects[i].y + res.rects[i].h - p.y;
+		    }
+		    else {
+		        if (vy > 0) {
+		            vy = res.rects[i].y - p.y - p.h;
+		        }
+		    }
 		}
-		else
-		{
+		else {
 			res.snake.velocity.x *= -1;
 		}
 	}
@@ -557,14 +562,11 @@ function moveLavaB(p, vx, vy) {
     }
     p.y += vy;
 
-    if (p.y < 40)
-    {
+    if (p.y < 40) {
         p.velocity.y = 3;
     }
-    else
-    {
-        if (p.y > 380)
-        {
+    else {
+        if (p.y > 380) {
             p.velocity.y = 0;
         }
     }
@@ -573,7 +575,7 @@ function moveLavaB(p, vx, vy) {
 
 // set the left button move event
 function left(e,bool) {
-	if(e.target.localName != 'select'){
+	if(e.target.localName != 'select') {
 		e.preventDefault(); 
 	}
 	res.direction.left = bool;
@@ -582,7 +584,7 @@ function left(e,bool) {
 
 // set the right button move event
 function right(e,bool) {
-	if(e.target.localName != 'select'){
+	if(e.target.localName != 'select') {
 		e.preventDefault(); 
 	}
 	res.direction.right = bool;
@@ -591,7 +593,7 @@ function right(e,bool) {
 
 // set the jump button move event
 function jump(e,bool) {
-	if(e.target.localName != 'select'){
+	if(e.target.localName != 'select') {
 		e.preventDefault(); 
 	}
 	res.direction.up = bool;
@@ -631,8 +633,7 @@ function update() {
 	}
 	if (res.lavaB_1 != null) {
 	    moveLavaB(res.lavaB_1, res.lavaB_1.velocity.x, res.lavaB_1.velocity.y);
-	    if (res.lavaB_1.velocity.y == 0 && res.lavaCheck1)
-	    {
+	    if (res.lavaB_1.velocity.y == 0 && res.lavaCheck1) {
 	        setTimeout(function () { res.lavaB_1.velocity.y = -3; res.lavaCheck1 = true; }, Math.random() * 4500);
 	        res.lavaCheck1 = false;
 
@@ -677,14 +678,11 @@ function draw() {
 	if (res.level == -1) {
 	    c.fillStyle = '#000090'
 	}
-	else
-	{
-	    if (res.level >= 1 && res.level <= 10)
-	    {
+	else {
+	    if (res.level >= 1 && res.level <= 10) {
 	        c.fillStyle = '#000000'
 	    }
-	    else
-	    {
+	    else {
 	        c.fillStyle = '#200000'
 	    }
 	}
@@ -725,8 +723,7 @@ function draw() {
 	if (res.level < 11) {
 	    sImg = document.getElementById('spike');
 	}
-	else
-	{
+	else {
 	    sImg = document.getElementById('lava');
 	}
 	for (var n = 0; n < res.killblocks.length; n++) {
@@ -803,8 +800,7 @@ function nextLevel() {
 	res.rectsCreated = [];
 	res.killblocks = [];
 	res.snake = null;
-	if (res.level <= 10)
-	{
+	if (res.level <= 10) {
 	    res.lavaB_1 = null;
 	    res.lavaB_2 = null;
 	}
@@ -872,15 +868,15 @@ function resetLevel() {
 
 // Set up the game loop
 window.onload = function () {
-	res.level = 1;
+    res.level = 1;
 
-	setInterval(function () {
-		if (res.gameComplete == false && res.gameOver == false) {
-			update();
-			draw();
-		}
-	}, 1000 / 60);
+    setInterval(function () {
+        if (res.gameComplete == false && res.gameOver == false) {
+            update();
+            draw();
+        }
+    }, 1000 / 60);
 
-	setClickEvent();
-	startCaveGame();
+    setClickEvent();
+    startCaveGame();
 };

@@ -28,34 +28,48 @@
         <img id="complete" src="img/complete.png" alt="comp" style="display:none"/>
         <img id="gameOver" src="img/gameover.png" alt="go" style="display:none"/>  
         <img id="gameOverFish" src="img/gameover_fish.png" alt="go" style="display:none"/>
-        <div id="canvasDiv" style="width:600px;margin-left:auto;margin-right:auto;">
+        <div style="width:600px;margin-left:auto;margin-right:auto;">
             <canvas id="screen" width="600" height="400"></canvas>
-            <div style="width:135px;margin-left:auto;margin-right:auto;">
+        </div>
+        <div style="position:absolute;top:0px;left:0px;">
+            <input id="left" type="button" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;"
+                style="background-color:white;cursor:pointer;font-size:32px;color:black;margin-top:50px;height:60px;" value="&lt;&lt; (A)" /><br />
+            <input id="right" type="button" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;"
+                style="background-color:white;cursor:pointer;font-size:32px;color:black;margin-top:100px;height:60px;" value="(D) &gt;&gt;" />
+        </div>
+        <div style="position:absolute;top:0px;right:0px;">
+            <input id="jump" type="button" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;"
+                style="background-color:white;cursor:pointer;font-size:32px;color:black;margin-top:130px;height:60px;" value="Jump (W)" />
+        </div>
+        <div style="width:800px;margin-left:auto;margin-right:auto;">
+            <div style="text-align: center;">
                 <span style="font-size:30px;color:white;">Blocks:&nbsp;</span>
                 <span style="font-size:30px;color:white;" id="blockNum"></span>
-                <br/>
+            </div>
+            <div style="text-align:center;">
                 <span style="font-size:30px;color:white;" id="scoreLevel">Level:&nbsp;</span>
                 <span style="font-size:30px;color:white;" id="levelNum"></span>
             </div>
         </div>
-        <div style="width:600px;margin-left:auto;margin-right:auto;">
-            <input id="left" type="button" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;" style="background-color:white;cursor:pointer;font-size: 40px;float:left;color: black;" value="&lt;&lt; (A)" />
-            <input id="right" type="button" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 40px;float:left;color: black;" value="(D) &gt;&gt;" />
-            <input id="jump" type="button" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;" style="background-color:white;cursor:pointer;font-size: 40px;float:right;color: black;" value="Jump (W)" />
-        </div>
-
-        <div style="width:600px;margin-left:auto;margin-right:auto;margin-top:120px;">
+        <div style="width:800px;margin-left:auto;margin-right:auto;margin-top:40px;">
             <div style="margin-bottom:50px;text-align:center">
-                <input type="button" id="reset" onmousedown="javascript:resetLevel();" value="Reset Level" style="background-color:white;cursor:pointer;font-size: 30px;color: black;"/>
+                <input type="button" id="reset" onmousedown="javascript:resetLevel();" value="Reset Level"
+                    style="background-color:white;cursor:pointer;font-size:30px;color:black;height:60px;"/>
             </div>
 
-            <input id="fish" type="button" onmousedown="javascript:fishLevel();" value="Fish Level" style="margin-left:10px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
-            <input id="cave" type="button" onmousedown="javascript:res.level=1;nextLevel();" value="Cave Levels" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
-            <input id="lavaLvl" type="button" onmousedown="javascript:lavaLevel();" value="Lava Levels" style="margin-left:30px;background-color:white;cursor:pointer;font-size: 30px;float:left;color: black;"/>
+            <div style="width:800px;">
+                <input id="fish" type="button" onmousedown="javascript:fishLevel();" value="Fish Level"
+                    style="background-color:white;cursor:pointer;font-size:30px;color:black;float:left;height:60px;"/>
+                <input id="cave" type="button" onmousedown="javascript:res.level=1;nextLevel();" value="Cave Levels"
+                    style="background-color:white;cursor:pointer;font-size:30px;color:black;float:right;height:60px;"/>
+                <br /><br /><br /><br /><br />
+                <input id="lavaLvl" type="button" onmousedown="javascript:lavaLevel();" value="Lava Levels"
+                    style="background-color:white;cursor:pointer;font-size:30px;color:black;float:right;height:60px;"/>
+            </div>
         </div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="scripts/game.min.js"></script>
+        <script src="scripts/game.min.js?v=1.5"></script>
     </div>
     </form>
 </body>

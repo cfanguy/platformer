@@ -129,7 +129,7 @@ function startCaveGame() {
 
 // starts the fish level variety
 function startFishGame() {
-	document.getElementById('levelNum').innerHTML = res.level == -1 ? "res.fish" : res.level;
+    document.getElementById('levelNum').innerHTML = res.level == -1 ? "res.fish" : res.level;
 
 	res.blockCount = res.INITIAL_BLOCKS;
 	document.getElementById("blockNum").innerText = res.blockCount;
@@ -823,6 +823,8 @@ function fishLevel() {
 	res.lavaB_1 = null;
 	res.lavaB_2 = null;
 	res.level = -1;
+	res.score = 0;
+	document.getElementById('levelNum').innerHTML = 0;
 	startFishGame();
 
 	document.getElementById('scoreLevel').innerHTML = 'Score: ';

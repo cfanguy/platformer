@@ -31,15 +31,22 @@
         <div style="width:600px;margin-left:auto;margin-right:auto;">
             <canvas id="screen" width="600" height="400"></canvas>
         </div>
-        <div style="position:absolute;top:0px;left:0px;">
-            <input id="left" type="button" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;"
-                style="background-color:white;cursor:pointer;font-size:32px;color:black;margin-top:50px;height:60px;" value="&lt;&lt; (A)" /><br />
-            <input id="right" type="button" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;"
-                style="background-color:white;cursor:pointer;font-size:32px;color:black;margin-top:100px;height:60px;" value="(D) &gt;&gt;" />
+        <div style="position:absolute;top:125px;left:20px;">
+            <a id="left" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;"
+                onmouseout="javascript:res.direction.left = false;" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
+                &nbsp;&nbsp;&lt;&lt; (A)&nbsp;&nbsp;
+            </a>
+            <br /><br /><br />
+            <a id="right" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;"
+                onmouseout="javascript:res.direction.right = false;" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
+                &nbsp;&nbsp;(D) &gt;&gt;&nbsp;&nbsp;&nbsp;
+            </a>
         </div>
-        <div style="position:absolute;top:0px;right:0px;">
-            <input id="jump" type="button" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;"
-                style="background-color:white;cursor:pointer;font-size:32px;color:black;margin-top:130px;height:60px;" value="Jump (W)" />
+        <div style="position:absolute;top:165px;right:20px;">
+            <a id="jump" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;"
+                onmouseout="javascript:res.direction.up = false;" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
+                &nbsp;Jump (W)&nbsp;
+            </a>
         </div>
         <div style="width:800px;margin-left:auto;margin-right:auto;">
             <div style="text-align: center;">

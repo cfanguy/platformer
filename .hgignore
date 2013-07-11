@@ -40,3 +40,5 @@ RBI/obj/Release/Package/FilePreviewParameter.xml
 RBI/obj/Release/Package/PackageTmp/img/lava.png
 RBI/obj/Release/Package/PackageTmp/img/lava_ball.png
 RBI/obj/Release/Package/PackageTmp/img/spikes_down.png
+RBI/obj/Release/Package/PackageTmp/scripts/game.min.js.map
+RBI/obj/Release/Package/PackageTmp/scripts/game.min.js

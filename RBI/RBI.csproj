@@ -64,6 +64,7 @@
     <Content Include="img\snake1.PNG" />
     <Content Include="img\snake1_r.PNG" />
     <Content Include="img\spikes.png" />
+    <Content Include="img\spikes_down.png" />
     <Content Include="RBI.aspx" />
     <Content Include="scripts\game.js" />
     <Content Include="scripts\game.min.js">

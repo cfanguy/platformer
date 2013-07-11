@@ -2,7 +2,6 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>
         RBI
@@ -16,6 +15,7 @@
         <img id="player_dead" src="img/player_dead.png" alt="d_pl" style="display:none"/>
         <img id="diamond" src="img/diamond_end.png" alt="diamond" style="display:none"/>
         <img id="spike" src="img/spikes.png" alt="spike" style="display:none"/>
+        <img id="spikes_down" src="img/spikes_down.png" alt="spikes_down" style="display:none"/>
         <img id="lava" src="img/lava.png" alt="lava" style="display:none"/>
         <img id="lava_ball" src="img/lava_ball.png" alt="lava_ball" style="display:none"/>
         <img id="snake_l" src="img/snake1.png" alt="snake" style="display: none"/>
@@ -72,11 +72,14 @@
                 <br /><br /><br /><br /><br />
                 <input id="lavaLvl" type="button" onmousedown="javascript:lavaLevel();" value="Lava Levels"
                     style="background-color:white;cursor:pointer;font-size:30px;color:black;float:right;height:60px;"/>
+                <br /><br /><br /><br /><br />
+                <input id="mineLvl" type="button" onmousedown="javascript:mineLevel();" value="Mine Levels"
+                    style="background-color:white;cursor:pointer;font-size:30px;color:black;float:right;height:60px;"/>
             </div>
         </div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="scripts/game.min.js?v=1.5"></script>
+        <script src="scripts/game.min.js?v=2.0"></script>
     </div>
     </form>
 </body>

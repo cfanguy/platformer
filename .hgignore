@@ -42,3 +42,7 @@ RBI/obj/Release/Package/PackageTmp/img/lava_ball.png
 RBI/obj/Release/Package/PackageTmp/img/spikes_down.png
 RBI/obj/Release/Package/PackageTmp/scripts/game.min.js.map
 RBI/obj/Release/Package/PackageTmp/scripts/game.min.js
+RBI/Properties/PublishProfiles/rbi - Web Deploy.pubxml.user
+RBI/Properties/PublishProfiles/rbi - Web Deploy.pubxml
+RBI/Properties/PublishProfiles/rbi - FTP.pubxml.user
+RBI/Properties/PublishProfiles/rbi - FTP.pubxml

@@ -1,3 +1,5 @@
+// http://msdn.microsoft.com/en-US/library/ie/hh673557.aspx#feedback
+
 var res = {};
 
 $(function () {
@@ -1011,3 +1013,33 @@ window.onload = function () {
     setClickEvent();
     startCaveGame();
 };
+
+
+document.addEventListener("DOMContentLoaded", addButtonEvents, false);
+
+
+// add events to the buttons
+function addButtonEvents() {
+    if (window.navigator.msPointerEnabled) {
+        document.getElementById('left').addEventListener('MSPointerDown', function (e) { res.direction.left = true }, false);
+        document.getElementById('left').addEventListener('MSPointerUp', function (e) { res.direction.left = false }, false);
+        document.getElementById('left').addEventListener('MSPointerOut', function (e) { res.direction.left = false }, false);
+        document.getElementById('right').addEventListener('MSPointerDown', function (e) { res.direction.right = true }, false);
+        document.getElementById('right').addEventListener('MSPointerUp', function (e) { res.direction.right = false }, false);
+        document.getElementById('right').addEventListener('MSPointerOut', function (e) { res.direction.right = false }, false);
+        document.getElementById('jump').addEventListener('MSPointerDown', function (e) { res.direction.up = true }, false);
+        document.getElementById('jump').addEventListener('MSPointerUp', function (e) { res.direction.up = false }, false);
+        document.getElementById('jump').addEventListener('MSPointerOut', function (e) { res.direction.up = false }, false);
+    }
+    else {
+        document.getElementById('left').addEventListener('mousedown', function (e) { res.direction.left = true }, false);
+        document.getElementById('left').addEventListener('mouseup', function (e) { res.direction.left = false }, false);
+        document.getElementById('left').addEventListener('mouseout', function (e) { res.direction.left = false }, false);
+        document.getElementById('right').addEventListener('mousedown', function (e) { res.direction.right = true }, false);
+        document.getElementById('right').addEventListener('mouseup', function (e) { res.direction.right = false }, false);
+        document.getElementById('right').addEventListener('mouseout', function (e) { res.direction.right = false }, false);
+        document.getElementById('jump').addEventListener('mousedown', function (e) { res.direction.up = true }, false);
+        document.getElementById('jump').addEventListener('mouseup', function (e) { res.direction.up = false }, false);
+        document.getElementById('jump').addEventListener('mouseout', function (e) { res.direction.up = false }, false);
+    }
+}

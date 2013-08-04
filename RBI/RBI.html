@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>RBI</title>
@@ -27,19 +27,16 @@
             <canvas id="screen" width="600" height="400"></canvas>
         </div>
         <div style="position:absolute;top:125px;left:20px;">
-            <a id="left" onmousedown="javascript:res.direction.left = true;" onmouseup="javascript:res.direction.left = false;"
-                onmouseout="javascript:res.direction.left = false;" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
+            <a id="left" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
                 &nbsp;&nbsp;&lt;&lt; (A)&nbsp;&nbsp;
             </a>
             <br /><br /><br />
-            <a id="right" onmousedown="javascript:res.direction.right = true;" onmouseup="javascript:res.direction.right = false;"
-                onmouseout="javascript:res.direction.right = false;" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
+            <a id="right" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
                 &nbsp;&nbsp;(D) &gt;&gt;&nbsp;&nbsp;&nbsp;
             </a>
         </div>
         <div style="position:absolute;top:165px;right:20px;">
-            <a id="jump" onmousedown="javascript:res.direction.up = true;" onmouseup="javascript:res.direction.up = false;"
-                onmouseout="javascript:res.direction.up = false;" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
+            <a id="jump" style="background-color:white;cursor:pointer;font-size:32px;color:black;height:50px;width:135px;">
                 &nbsp;Jump (W)&nbsp;
             </a>
         </div>
@@ -74,7 +71,7 @@
         </div>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="scripts/game.min.js?v=2.0"></script>
+        <script src="scripts/game.min.js?v=2.5"></script>
     </div>
 </body>
 </html>

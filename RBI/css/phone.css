@@ -1,0 +1,66 @@
+﻿@media all and (orientation:portrait) {
+    @-ms-viewport {
+        width:320px;
+        user-zoom: fixed;
+        max-zoom: 1;
+        min-zoom: 1;
+    }
+}
+
+@media all and (orientation:landscape) {
+    @-ms-viewport {
+        width:800px;
+        user-zoom: fixed;
+        max-zoom: 1;
+        min-zoom: 1;
+    }
+}
+
+html, body {
+    height: 100%;
+    width: 800px;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-size: 11pt;
+    font-family: "Segoe WP";
+    letter-spacing: 0.02em;
+    background-color: #000000;
+    color: #ffffff;
+    margin-left: 24px;
+    -ms-touch-action:none;
+}
+
+#page-title {
+    font-size: 24pt;
+}
+
+.indexMenu {
+    margin-left: 30px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 32px;
+    color: black;
+    height: 60px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.gameMenuDiv {
+    position:absolute;
+    top:105px;
+    right:20px;
+}
+
+.gameMenu {
+    position:relative;
+    background-color:white;
+    cursor:pointer;
+    font-size:32px;
+    color:black;
+    height:60px;
+    text-decoration:none;
+    border-radius:4px;
+}

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="RBI_Mobile.html" />
     <Content Include="img\bandit.PNG" />
     <Content Include="img\block.jpg" />
     <Content Include="img\complete.PNG" />
@@ -65,19 +66,13 @@
     <Content Include="img\snake1_r.PNG" />
     <Content Include="img\spikes.png" />
     <Content Include="img\spikes_down.png" />
-    <Content Include="RBI.html" />
-    <Content Include="scripts\game.js" />
-    <Content Include="scripts\game.min.js">
-      <DependentUpon>game.js</DependentUpon>
-    </Content>
+    <Content Include="RBI_Desktop.html" />
+    <Content Include="scripts\game_mobile.js" />
+    <Content Include="scripts\game_desktop.js" />
+    <Content Include="scripts\hand.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="scripts\game.min.js.map">
-      <DependentUpon>game.js</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />

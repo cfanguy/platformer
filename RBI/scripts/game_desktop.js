@@ -247,78 +247,23 @@ function setFishBlocks() {
 
 
 function setCaveBlocks() {
-	// initial platform for player
-	res.rects.push(rect(20, 100, 20, 20));
-	res.rects.push(rect(40, 100, 20, 20));
+    // use level data from levels_desktop.js
+    for (var n = 0; n < level.cave[res.level - 1].length; n++) {
+        for (var i = 0; i < level.cave[res.level - 1][n].length; i++) {
+            switch (level.cave[res.level - 1][n][i]) {
+                case "+":
+                    res.rects.push(rect(i * 20, n * 20, 20, 20));
+                    break;
+                case "-":
+                    break;
+                case "^":
+                    res.killblocks.push(killblock(i * 20, n * 20, 20, 20));
+                    break;
+            }
+        }
 
-    // horizontal blocks and killblocks
-	for (var i = 0; i < 620; i += 20) {
-		res.rects.push(rect(i, 0, 20, 20));
-		if (i > 520 || i < 20) {
-			res.rects.push(rect(i, 380, 20, 20));
-		}
-		else {
-		    res.killblocks.push(killblock(i, 380, 20, 20));
-		}
-	}
-
-	// vertical blocks
-	for (var i = 0; i < 380; i += 20) {
-		res.rects.push(rect(0, i, 20, 20));
-		res.rects.push(rect(580, i, 20, 20));
-	}
-
-	switch (res.level) {
-		default:
-			for (var  i = 0; i < 12;  i++) {
-			    var x = Math.floor((Math.random() * 10) + 3) * 40;
-			    var y = Math.floor((Math.random() * 9) + 2) * 30;
-				
-				res.rects.push(rect(x, y, 20, 20));
-			}
-			
-			res.diam = diamond(560, 360, 20, 20);
-			break;
-		case 9:
-			res.rects.push(rect(180, 260, 20, 20));
-			res.rects.push(rect(200, 260, 20, 20));
-			res.rects.push(rect(220, 260, 20, 20));
-			res.rects.push(rect(240, 260, 20, 20));
-			res.rects.push(rect(260, 260, 20, 20));
-			res.rects.push(rect(280, 260, 20, 20));
-			res.rects.push(rect(300, 260, 20, 20));
-			res.rects.push(rect(320, 260, 20, 20));
-			res.rects.push(rect(340, 260, 20, 20));
-			res.rects.push(rect(360, 260, 20, 20));
-			res.rects.push(rect(360, 260, 20, 20));
-
-			res.snake = snakeEnemy(320, 245, 30, 15);
-			res.diam = diamond(560, 360, 20, 20);
-			break;
-		case 10:
-			res.rects.push(rect(120, 180, 20, 20));
-			res.killblocks.push(killblock(120, 160, 20, 20));
-
-			res.rects.push(rect(200, 280, 20, 20));
-			res.killblocks.push(killblock(200, 260, 20, 20));
-
-			res.rects.push(rect(200, 100, 20, 20));
-			res.killblocks.push(killblock(200, 80, 20, 20));
-
-			res.rects.push(rect(280, 180, 20, 20));
-			res.killblocks.push(killblock(280, 160, 20, 20));
-
-			res.rects.push(rect(360, 100, 20, 20));
-			res.killblocks.push(killblock(360, 80, 20, 20));
-
-			res.rects.push(rect(360, 280, 20, 20));
-			res.killblocks.push(killblock(360, 260, 20, 20));
-
-			res.rects.push(rect(440, 180, 20, 20));
-			res.killblocks.push(killblock(440, 160, 20, 20));
-			res.diam = diamond(560, 360, 20, 20);
-			break;
-	}
+        res.diam = diamond(560, 360, 20, 20);
+    }
 }
 
 

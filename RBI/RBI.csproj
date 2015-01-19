@@ -62,14 +62,13 @@
     <Content Include="img\player_dead.png" />
     <Content Include="img\player_l.png" />
     <Content Include="img\player_r.png" />
-    <Content Include="img\snake1.PNG" />
-    <Content Include="img\snake1_r.PNG" />
     <Content Include="img\spikes.png" />
     <Content Include="img\spikes_down.png" />
     <Content Include="RBI_Desktop.html" />
     <Content Include="scripts\game_mobile.js" />
     <Content Include="scripts\game_desktop.js" />
     <Content Include="scripts\hand.js" />
+    <Content Include="scripts\levels_desktop.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

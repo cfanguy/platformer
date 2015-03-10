@@ -10,10 +10,14 @@ $(function () {
 	res.rects = [];
 	res.killblocks = [];
 	res.rectsCreated = [];
+	res.crtBlkWidth = 20;
+	res.crtBlkHeight = 10;
 	res.GAME_END_CAVE = 10;
 	res.GAME_END_LAVA = 20;
 	res.GAME_END_MINE = 30;
 	res.INITIAL_BLOCKS = 10;
+	res.blockSize = 10;
+	res.killBlkSize = 10;
 	res.diam = null;
 	res.snake = null;
 	res.lavaB_1 = null;
@@ -71,7 +75,7 @@ function setClickEvent() {
 		var imgTop = $(this).offset().top;
 		var clickTop = e.pageY;
 		var y = clickTop - imgTop;
-		var blockY = y - 10;
+		var blockY = y - 5;
 
 		for (var i = 0; i < res.rectsCreated.length; i++) {
 			if (x > res.rectsCreated[i].x && x < res.rectsCreated[i].x + res.rectsCreated[i].w &&
@@ -87,29 +91,9 @@ function setClickEvent() {
 			res.blockCount--;
 			document.getElementById("blockNum").innerText = res.blockCount;
 
-			res.rectsCreated.push(rectCreated(blockX, blockY, 20, 20));
+			res.rectsCreated.push(rectCreated(blockX, blockY, res.crtBlkWidth, res.crtBlkHeight));
 		}
 	});
-}
-
-
-// starts the fish level variety
-function startFishGame() {
-    document.getElementById('levelNum').innerHTML = res.level == -1 ? "res.fish" : res.level;
-
-    res.blockCount = res.INITIAL_BLOCKS;
-    document.getElementById("blockNum").innerText = res.blockCount;
-
-    setFishBlocks();
-
-    res.gameComplete = false;
-    res.gameOver = false;
-
-    res.player = rect(20, 20, 26, 34);
-    res.player.velocity = { x: 0, y: 0 };
-    res.player.onFloor = false;
-
-    addEvents();
 }
 
 
@@ -128,11 +112,11 @@ function startCaveGame() {
 	res.player = rect(20, 20, 26, 34);
 	res.player.velocity = { x: 0, y: 0 };
 	res.player.onFloor = false;
-	
+
 	if (res.snake != null) {
-		res.snake.velocity = { x: 0, y: 0 };
-		res.snake.velocity.x = -2;
-		res.snake.velocity.y = 1;
+	    res.snake.velocity = { x: 0, y: 0 };
+	    res.snake.velocity.x = -2;
+	    res.snake.velocity.y = 1;
 	}
 
 	addEvents();
@@ -156,13 +140,13 @@ function startLavaGame() {
     res.player.onFloor = false;
 
     if (res.lavaB_1 == null) {
-        res.lavaB_1 = new lavaBall(220, 382, 20, 20);
+        res.lavaB_1 = new lavaBall(220, 402, 20, 20);
         res.lavaB_1.velocity = { x: 0, y: 0 };
         res.lavaB_1.velocity.x = 0;
         res.lavaB_1.velocity.y = 0;
     }
     if (res.lavaB_2 == null) {
-        res.lavaB_2 = new lavaBall(400, 382, 20, 20);
+        res.lavaB_2 = new lavaBall(400, 402, 20, 20);
         res.lavaB_2.velocity = { x: 0, y: 0 };
         res.lavaB_2.velocity.x = 0;
         res.lavaB_2.velocity.y = 0;
@@ -215,83 +199,54 @@ function addEvents() {
 }
 
 
-function setFishBlocks() {
-    // initial platform for player
-    res.rectsCreated.push(rect(20, 100, 20, 20));
-    res.rectsCreated.push(rect(40, 100, 20, 20));
-
-    // horizontal blocks and killblocks
-    for (var i = 0; i < 620; i += 20) {
-        res.rects.push(rect(i, 0, 20, 20));
-        if (i > 560 || i < 20) {
-            res.rects.push(rect(i, 380, 20, 20));
-        }
-        else {
-            res.killblocks.push(killblock(i, 380, 20, 20));
-        }
-    }
-
-    // vertical blocks
-    for (var i = 0; i < 380; i += 20) {
-        res.rects.push(rect(0, i, 20, 20));
-        res.rects.push(rect(580, i, 20, 20));
-    }
-
-    res.fish.push(fishEnemy(200, 200, 25, 25));
-    res.fish[0].velocity = { x: 0, y: 0 };
-    res.fish.push(fishEnemy(300, 220, 25, 25));
-    res.fish[1].velocity = { x: 0, y: 0 };
-    res.fish.push(fishEnemy(400, 200, 25, 25));
-    res.fish[2].velocity = { x: 0, y: 0 };
-}
-
-
 function setCaveBlocks() {
     // use level data from levels_desktop.js
     for (var n = 0; n < level.cave[res.level - 1].length; n++) {
         for (var i = 0; i < level.cave[res.level - 1][n].length; i++) {
             switch (level.cave[res.level - 1][n][i]) {
                 case "+":
-                    res.rects.push(rect(i * 20, n * 20, 20, 20));
+                    res.rects.push(rect(i * res.blockSize, n * res.blockSize, res.blockSize, res.blockSize));
                     break;
                 case "-":
                     break;
                 case "^":
-                    res.killblocks.push(killblock(i * 20, n * 20, 20, 20));
+                    res.killblocks.push(killblock(i * res.killBlkSize, n * res.killBlkSize, res.killBlkSize, res.killBlkSize));
                     break;
             }
         }
 
-        res.diam = diamond(560, 360, 20, 20);
+        res.diam = diamond(570, 370, 20, 20);
     }
 }
 
 
 function setLavaBlocks() {
     // initial platform for player
-    res.rects.push(rect(20, 100, 20, 20));
-    res.rects.push(rect(40, 100, 20, 20));
+    res.rects.push(rect(10, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(20, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(30, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(40, 100, res.blockSize, res.blockSize));
 
     // horizontal blocks and killblocks
-    for (var i = 0; i < 620; i += 20) {
-        res.rects.push(rect(i, 0, 20, 20));
-        if (i > 520 || i < 20) {
-            res.rects.push(rect(i, 380, 20, 20));
+    for (var i = 0; i < 640; i += res.blockSize) {
+        res.rects.push(rect(i, 0, res.blockSize, res.blockSize));
+        if (i > 540 || i < 10) {
+            res.rects.push(rect(i, 390, res.blockSize, res.blockSize));
         }
         else {
-            res.killblocks.push(killblock(i, 380, 20, 20));
+            res.killblocks.push(killblock(i, 390, res.killBlkSize, res.killBlkSize));
         }
     }
 
     // vertical blocks
-    for (var i = 0; i < 380; i += 20) {
-        res.rects.push(rect(0, i, 20, 20));
-        res.rects.push(rect(580, i, 20, 20));
+    for (var i = 0; i < 390; i += res.blockSize) {
+        res.rects.push(rect(0, i, res.blockSize, res.blockSize));
+        res.rects.push(rect(590, i, res.blockSize, res.blockSize));
     }
 
     switch (res.level) {
         default:
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 20; i++) {
                 var x, y;
 
                 x = Math.floor((Math.random() * 10) + 3) * 40;
@@ -302,57 +257,61 @@ function setLavaBlocks() {
                     i--;
                 }
                 else {
-                    res.rects.push(rect(x, y, 20, 20));
+                    res.rects.push(rect(x, y, res.blockSize, res.blockSize));
                 }
             }
 
-            res.diam = diamond(560, 360, 20, 20);
+            res.diam = diamond(570, 370, 20, 20);
             break;
         case 20:
-            res.rects.push(rect(200, 100, 20, 20));
-            res.rects.push(rect(360, 100, 20, 20));
+            res.rects.push(rect(200, 100, res.blockSize, res.blockSize));
+            res.rects.push(rect(360, 100, res.blockSize, res.blockSize));
 
-            res.diam = diamond(560, 360, 20, 20);
+            res.diam = diamond(570, 370, 20, 20);
             break;
     }
 }
 
 
 function setMineBlocks() {
-    res.rects.push(rect(20, 300, 20, 20));
-    res.rects.push(rect(40, 300, 20, 20));
-    res.rects.push(rect(40, 300, 20, 20));
+    res.rects.push(rect(10, 300, res.blockSize, res.blockSize));
+    res.rects.push(rect(20, 300, res.blockSize, res.blockSize));
+    res.rects.push(rect(30, 300, res.blockSize, res.blockSize));
+    res.rects.push(rect(40, 300, res.blockSize, res.blockSize));
 
     // horizontal blocks and killblocks
-    for (var i = 0; i < 620; i += 20) {
-        res.rects.push(rect(i, 380, 20, 20));
-        if (i != 580 && i != 0) {
-            res.killblocks.push(killblock(i, 0, 20, 20));
+    for (var i = 00; i < 600; i += res.blockSize) {
+        res.rects.push(rect(i, 390, res.blockSize, res.blockSize));
+        if (i != 590 && i != 0) {
+            res.killblocks.push(killblock(i, 0, res.killBlkSize, res.killBlkSize));
         }
     }
 
     // vertical blocks
-    for (var i = 0; i < 380; i += 20) {
-        res.rects.push(rect(0, i, 20, 20));
-        res.rects.push(rect(580, i, 20, 20));
+    for (var i = 0; i < 390; i += res.blockSize) {
+        res.rects.push(rect(0, i, res.blockSize, res.blockSize));
+        res.rects.push(rect(590, i, res.blockSize, res.blockSize));
     }
 
-    if (res.level < 30)
-    {
-        for (var i = 0; i < 8; i++) {
+    if (res.level < 30) {
+        for (var i = 0; i < 20; i++) {
             var x = Math.floor((Math.random() * 10) + 2) * 40;
             var y = Math.floor((Math.random() * 9) + 2) * 30;
 
-            res.rects.push(rect(x, y, 20, 20));
+            res.rects.push(rect(x, y, res.blockSize, res.blockSize));
         }
     }
 
-    res.snake = snakeEnemy(160, 365, 30, 15);
+    res.snake = snakeEnemy(160, 375, 30, 15);
 
-    res.rects.push(rect(520, 100, 20, 20));
-    res.rects.push(rect(540, 100, 20, 20));
-    res.rects.push(rect(560, 100, 20, 20));
-    res.diam = diamond(560, 80, 20, 20);
+    res.rects.push(rect(520, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(530, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(540, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(550, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(560, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(570, 100, res.blockSize, res.blockSize));
+    res.rects.push(rect(580, 100, res.blockSize, res.blockSize));
+    res.diam = diamond(570, 80, 20, 20);
 }
 
 
@@ -528,29 +487,6 @@ function moveEnemy(p, vx, vy) {
 }
 
 
-// move the fish and destroy blocks that collide
-function moveFish(p, vx, vy) {
-	// remove the created rectangle that collided with the enemy
-	for (var i = 0; i < res.rectsCreated.length; i++) {
-		var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
-		if (overlap(c, res.rectsCreated[i]))
-			res.rectsCreated.splice(i, 1);
-	}
-
-	// move enemy along x axis
-	for (var i = 0; i < res.rects.length; i++) {
-		var c = { x: p.x + vx, y: p.y, w: p.w, h: p.h };
-	}
-	p.x += vx;
-
-	// move enemy along y axis
-	for (var i = 0; i < res.rects.length; i++) {
-		var c = { x: p.x, y: p.y + vy, w: p.w, h: p.h };
-	}
-	p.y += vy;
-}
-
-
 // move the lava ball vertically and destroy blocks that collide
 function moveLavaB(p, vx, vy) {
     // remove the created rectangle that collided with the enemy
@@ -570,7 +506,7 @@ function moveLavaB(p, vx, vy) {
         p.velocity.y = 3;
     }
     else {
-        if (p.y > 380) {
+        if (p.y > 400) {
             p.velocity.y = 0;
         }
     }
@@ -734,14 +670,14 @@ function draw() {
 	else if (res.level < 21) {
 	    sImg = document.getElementById('lava');
 	}
-	else
-	{
+	else {
 	    sImg = document.getElementById('spikes_down');
-	}
+    }
 	for (var n = 0; n < res.killblocks.length; n++) {
 	    var s = res.killblocks[n];
 		c.drawImage(sImg, s.x, s.y);
 	}
+
 	// draw snake
 	var snImg = document.getElementById('snake_l');
 	var snRImg = document.getElementById('snake_r');

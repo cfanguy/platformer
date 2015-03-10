@@ -45,20 +45,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\block.png" />
+    <Content Include="img\created.png" />
+    <Content Include="img\diamond.png" />
+    <Content Include="img\snake.png" />
+    <Content Include="img\snake_r.png" />
     <Content Include="RBI_Mobile.html" />
     <Content Include="img\bandit.PNG" />
-    <Content Include="img\block.jpg" />
     <Content Include="img\complete.PNG" />
-    <Content Include="img\created.jpg" />
-    <Content Include="img\diamond_1.JPG" />
     <Content Include="img\diamond_end.PNG" />
-    <Content Include="img\fish.PNG" />
-    <Content Include="img\fish_r.PNG" />
+    <Content Include="img\fish.png" />
+    <Content Include="img\fish_r.png" />
     <Content Include="img\gameover.png" />
     <Content Include="img\gameover_fish.png" />
     <Content Include="img\lava.png" />
     <Content Include="img\lava_ball.png" />
-    <Content Include="img\next_level.PNG" />
+    <Content Include="img\next_level.png" />
     <Content Include="img\player_dead.png" />
     <Content Include="img\player_l.png" />
     <Content Include="img\player_r.png" />

@@ -77,17 +77,7 @@ function setClickEvent() {
 		var y = clickTop - imgTop;
 		var blockY = y - 5;
 
-		for (var i = 0; i < res.rectsCreated.length; i++) {
-			if (x > res.rectsCreated[i].x && x < res.rectsCreated[i].x + res.rectsCreated[i].w &&
-				y > res.rectsCreated[i].y && y < res.rectsCreated[i].y + res.rectsCreated[i].h) {
-				res.blockCount++;
-				document.getElementById("blockNum").innerText = res.blockCount;
-				createBlock = false;
-				res.rectsCreated.splice(i, 1);
-			}
-		}
-
-		if (res.blockCount > 0 && createBlock) {
+		if (res.blockCount > 0) {
 			res.blockCount--;
 			document.getElementById("blockNum").innerText = res.blockCount;
 

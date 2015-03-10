@@ -118,8 +118,6 @@ function startCaveGame() {
 	    res.snake.velocity.x = -2;
 	    res.snake.velocity.y = 1;
 	}
-
-	addEvents();
 }
 
 
@@ -151,8 +149,6 @@ function startLavaGame() {
         res.lavaB_2.velocity.x = 0;
         res.lavaB_2.velocity.y = 0;
     }
-
-    addEvents();
 }
 
 
@@ -177,25 +173,6 @@ function startMineGame() {
         res.snake.velocity.x = -3;
         res.snake.velocity.y = 1;
     }
-
-    addEvents();
-}
-
-
-// add mouse events
-function addEvents() {
-    // set the elements
-    var l = document.getElementById('left');
-    var r = document.getElementById('right');
-    var j = document.getElementById('jump');
-
-    // add touch events to each element
-    l.addEventListener('pointerdown', function (event) { left(event, true); event.preventDefault(); }, false);
-    l.addEventListener('pointerup', function (event) { left(event, false); event.preventDefault(); }, false);
-    r.addEventListener('pointerdown', function (event) { right(event, true); event.preventDefault(); }, false);
-    r.addEventListener('pointerup', function (event) { right(event, false); event.preventDefault(); }, false);
-    j.addEventListener('pointerdown', function (event) { jump(event, true); event.preventDefault(); }, false);
-    j.addEventListener('pointerup', function (event) { jump(event, false); event.preventDefault(); }, false);
 }
 
 

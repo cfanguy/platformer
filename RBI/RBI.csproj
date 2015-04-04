@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\phone.css" />
+    <Content Include="game.html" />
     <Content Include="img\block.png" />
     <Content Include="img\created.png" />
     <Content Include="img\diamond.png" />
@@ -70,7 +72,12 @@
     <Content Include="scripts\game_mobile.js" />
     <Content Include="scripts\game_desktop.js" />
     <Content Include="scripts\hand.js" />
+    <Content Include="scripts\jquery.min.js" />
     <Content Include="scripts\levels_desktop.js" />
+    <Content Include="sounds\dead.wav" />
+    <Content Include="sounds\jump.wav" />
+    <Content Include="sounds\place_block.wav" />
+    <Content Include="sounds\win.wav" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

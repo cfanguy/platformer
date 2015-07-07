@@ -8,13 +8,13 @@
         <img id="player_r" src='img/player_r.png' alt="r_pl" style="display:none" />
         <img id="player_l" src='img/player_l.png' alt="l_pl" style="display:none" />
         <img id="player_dead" src='img/player_dead.png' alt="d_pl" style="display:none" />
-        <img id="diamond" src='img/diamond_end.png' alt="diamond" style="display:none" />
+        <img id="endLevel" src='img/endLevel_end.png' alt="endLevel" style="display:none" />
         <img id="spike" src='img/spikes.png' alt="spike" style="display:none" />
         <img id="spikes_down" src='img/spikes_down.png' alt="spikes_down" style="display:none" />
         <img id="lava" src='img/lava.png' alt="lava" style="display:none" />
         <img id="lava_ball" src='img/lava_ball.png' alt="lava_ball" style="display:none" />
-        <img id="snake_l" src='img/snake.png' alt="snake" style="display: none" />
-        <img id="snake_r" src='img/snake_r.png' alt="snake" style="display: none" />
+        <img id="bandit_l" src='img/bandit.png' alt="bandit" style="display: none" />
+        <img id="bandit_r" src='img/bandit_r.png' alt="bandit" style="display: none" />
         <img id="fish_r" src='img/fish_r.png' alt="fish" style="display:none" />
         <img id="fish_l" src='img/fish.png' alt="fish" style="display:none" />
         <img id="block" src='img/block.png' alt="block" style="display:none" />
@@ -37,20 +37,24 @@
                 <span style="font-size:30px;color:white;" id="scoreLevel">Level:&nbsp;</span>
                 <span style="font-size:30px;color:white;" id="levelNum"></span>
             </div>
+            <div style="text-align:center;">
+                <span style="font-size:30px;color:white;">Time Left:&nbsp;</span>
+                <span style="font-size:30px;color:red;" id="time">60</span>
+            </div>
         </div>
 
-        <div style="width:800px;margin-left:auto;margin-right:auto;margin-top:40px;">
+        <div style="width:800px;margin-left:auto;margin-right:auto;margin-top:80px;">
             <div style="margin-bottom:50px;text-align:center">
                 <input type="button" id="reset" onmousedown="javascript:resetLevel();" value="Reset Level"
                     style="background-color:white;cursor:pointer;font-size:30px;color:black;height:60px;"/>
             </div>
 
             <div style="width:800px;">
-                <input id="cave" type="button" onmousedown="javascript:res.level=1;nextLevel();" value="Cave Levels"
+                <input id="cave" type="button" onmousedown="javascript:startLevel(0);" value="Cave Levels"
                     style="background-color:white;cursor:pointer;font-size:30px;color:black;float:left;height:60px;"/>
-                <input id="lavaLvl" type="button" onmousedown="javascript:lavaLevel();" value="Lava Levels"
+                <input id="lavaLvl" type="button" onmousedown="javascript:startLevel(1);" value="Lava Levels"
                     style="margin-left:130px;background-color:white;cursor:pointer;font-size:30px;color:black;float:left;height:60px;"/>
-                <input id="mineLvl" type="button" onmousedown="javascript:mineLevel();" value="Mine Levels"
+                <input id="mineLvl" type="button" onmousedown="javascript:startLevel(2);" value="Mine Levels"
                     style="background-color:white;cursor:pointer;font-size:30px;color:black;float:right;height:60px;"/>
             </div>
         </div>

@@ -18,8 +18,8 @@ $(function () {
 	res.INITIAL_BLOCKS = 10;
 	res.blockSize = 10;
 	res.killBlkSize = 10;
-	res.diam = null;
-	res.snake = null;
+	res.endL = null;
+	res.bandit = null;
 	res.lavaB_1 = null;
 	res.lavaB_2 = null;
 	res.fish = [];
@@ -45,13 +45,13 @@ function rect(x, y, w, h) {
 function rectCreated(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
 }
-function diamond(x, y, w, h) {
+function endLevel(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
 }
 function killblock(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
 }
-function snakeEnemy(x, y, w, h) {
+function banditEnemy(x, y, w, h) {
 	return { x: x, y: y, w: w, h: h };
 }
 function fishEnemy(x, y, w, h) {
@@ -89,7 +89,7 @@ function setClickEvent() {
 
 // starts the cave level variety
 function startCaveGame() {
-	document.getElementById('levelNum').innerHTML = res.level == -1 ? "fish" : res.level;
+	document.getElementById('levelNum').innerHTML = res.level === -1 ? "fish" : res.level;
 
 	res.blockCount = res.INITIAL_BLOCKS;
 	document.getElementById("blockNum").innerText = res.blockCount;
@@ -103,17 +103,17 @@ function startCaveGame() {
 	res.player.velocity = { x: 0, y: 0 };
 	res.player.onFloor = false;
 
-	if (res.snake != null) {
-	    res.snake.velocity = { x: 0, y: 0 };
-	    res.snake.velocity.x = -2;
-	    res.snake.velocity.y = 1;
+	if (res.bandit != null) {
+	    res.bandit.velocity = { x: 0, y: 0 };
+	    res.bandit.velocity.x = -2;
+	    res.bandit.velocity.y = 1;
 	}
 }
 
 
 // starts the lava level variety
 function startLavaGame() {
-    document.getElementById('levelNum').innerHTML = res.level == -1 ? "fish" : res.level;
+    document.getElementById('levelNum').innerHTML = res.level === -1 ? "fish" : res.level;
 
     res.blockCount = res.INITIAL_BLOCKS;
     document.getElementById("blockNum").innerText = res.blockCount;
@@ -127,13 +127,13 @@ function startLavaGame() {
     res.player.velocity = { x: 0, y: 0 };
     res.player.onFloor = false;
 
-    if (res.lavaB_1 == null) {
+    if (res.lavaB_1 === null) {
         res.lavaB_1 = new lavaBall(220, 402, 20, 20);
         res.lavaB_1.velocity = { x: 0, y: 0 };
         res.lavaB_1.velocity.x = 0;
         res.lavaB_1.velocity.y = 0;
     }
-    if (res.lavaB_2 == null) {
+    if (res.lavaB_2 === null) {
         res.lavaB_2 = new lavaBall(400, 402, 20, 20);
         res.lavaB_2.velocity = { x: 0, y: 0 };
         res.lavaB_2.velocity.x = 0;
@@ -144,7 +144,7 @@ function startLavaGame() {
 
 // starts the mine level variety
 function startMineGame() {
-    document.getElementById('levelNum').innerHTML = res.level == -1 ? "fish" : res.level;
+    document.getElementById('levelNum').innerHTML = res.level === -1 ? "fish" : res.level;
 
     res.blockCount = res.INITIAL_BLOCKS;
     document.getElementById("blockNum").innerText = res.blockCount;
@@ -158,10 +158,10 @@ function startMineGame() {
     res.player.velocity = { x: 0, y: 0 };
     res.player.onFloor = false;
 
-    if (res.snake != null) {
-        res.snake.velocity = { x: 0, y: 0 };
-        res.snake.velocity.x = -3;
-        res.snake.velocity.y = 1;
+    if (res.bandit != null) {
+        res.bandit.velocity = { x: 0, y: 0 };
+        res.bandit.velocity.x = -3;
+        res.bandit.velocity.y = 1;
     }
 }
 
@@ -182,7 +182,7 @@ function setCaveBlocks() {
             }
         }
 
-        res.diam = diamond(570, 370, 20, 20);
+        res.endL = endLevel(570, 370, 20, 20);
     }
 }
 
@@ -228,13 +228,13 @@ function setLavaBlocks() {
                 }
             }
 
-            res.diam = diamond(570, 370, 20, 20);
+            res.endL = endLevel(570, 370, 20, 20);
             break;
         case 20:
             res.rects.push(rect(200, 100, res.blockSize, res.blockSize));
             res.rects.push(rect(360, 100, res.blockSize, res.blockSize));
 
-            res.diam = diamond(570, 370, 20, 20);
+            res.endL = endLevel(570, 370, 20, 20);
             break;
     }
 }
@@ -269,7 +269,7 @@ function setMineBlocks() {
         }
     }
 
-    res.snake = snakeEnemy(160, 375, 30, 15);
+    res.bandit = banditEnemy(160, 349, 32, 41);
 
     res.rects.push(rect(520, 100, res.blockSize, res.blockSize));
     res.rects.push(rect(530, 100, res.blockSize, res.blockSize));
@@ -278,7 +278,7 @@ function setMineBlocks() {
     res.rects.push(rect(560, 100, res.blockSize, res.blockSize));
     res.rects.push(rect(570, 100, res.blockSize, res.blockSize));
     res.rects.push(rect(580, 100, res.blockSize, res.blockSize));
-    res.diam = diamond(570, 80, 20, 20);
+    res.endL = endLevel(570, 80, 20, 20);
 }
 
 
@@ -319,8 +319,8 @@ function moveplayer(p, vx, vy) {
 		        }
 		    }
 		}
-		if (res.diam != null) {
-			if (overlap(c, res.diam)) {
+		if (res.endL != null) {
+			if (overlap(c, res.endL)) {
 				res.gameComplete = true;
 			}
 		}
@@ -351,8 +351,8 @@ function moveplayer(p, vx, vy) {
 					vy = res.rects[i].y - p.y - p.h;
 				}
 			}
-			if (res.diam != null) {
-				if (overlap(c, res.diam)) {
+			if (res.endL != null) {
+				if (overlap(c, res.endL)) {
 					res.gameComplete = true;
 				}
 			}
@@ -367,8 +367,8 @@ function moveplayer(p, vx, vy) {
 				vy = res.rectsCreated[i].y - p.y - p.h;
 			}
 		}
-		if (res.diam != null) {
-			if (overlap(c, res.diam)) {
+		if (res.endL != null) {
+			if (overlap(c, res.endL)) {
 				res.gameComplete = true;
 			}
 		}
@@ -383,9 +383,9 @@ function moveplayer(p, vx, vy) {
 		}
 	}
 	
-	// res.snake collision
-	if (res.snake != null) {
-		if (overlap(c, res.snake)) {
+	// res.bandit collision
+	if (res.bandit != null) {
+		if (overlap(c, res.bandit)) {
 			res.gameOver = true;
 		}
 	}
@@ -406,7 +406,7 @@ function moveplayer(p, vx, vy) {
 }
 
 
-// move the snake enemy along vx then along vy, but only move
+// move the bandit enemy along vx then along vy, but only move
 // as far as we can without colliding with a solid rectangle
 function moveEnemy(p, vx, vy) {
 	// remove the created rectangle that collided with the enemy
@@ -422,12 +422,12 @@ function moveEnemy(p, vx, vy) {
 		if (overlapEnemy(c, res.rects[i])) {
 		    if (vx < 0) {
 		        vx = res.rects[i].x + res.rects[i].w - p.x;
-		        res.snake.velocity.x *= -1;
+		        res.bandit.velocity.x *= -1;
 		    }
 		    else {
 		        if (vx > 0) {
 		            vx = res.rects[i].x - p.x - p.w;
-		            res.snake.velocity.x *= -1;
+		            res.bandit.velocity.x *= -1;
 		        }
 		    }
 		}
@@ -448,7 +448,7 @@ function moveEnemy(p, vx, vy) {
 		    }
 		}
 		else {
-			res.snake.velocity.x *= -1;
+			res.bandit.velocity.x *= -1;
 		}
 	}
 }
@@ -515,7 +515,7 @@ function update() {
 	else {
 		res.player.velocity.x = 3 * (!!res.direction.right - !!res.direction.left); // right - left
 	}
-	if (res.level == -1) {
+	if (res.level === -1) {
 		res.player.velocity.y += 0.2;
 	}
 	else {
@@ -535,12 +535,12 @@ function update() {
 		res.player.velocity.y = -13;
 	}
 
-	if (res.snake != null) {
-	    moveEnemy(res.snake, res.snake.velocity.x, res.snake.velocity.y);
+	if (res.bandit != null) {
+	    moveEnemy(res.bandit, res.bandit.velocity.x, res.bandit.velocity.y);
 	}
 	if (res.lavaB_1 != null) {
 	    moveLavaB(res.lavaB_1, res.lavaB_1.velocity.x, res.lavaB_1.velocity.y);
-	    if (res.lavaB_1.velocity.y == 0 && res.lavaCheck1) {
+	    if (res.lavaB_1.velocity.y === 0 && res.lavaCheck1) {
 	        setTimeout(function () { res.lavaB_1.velocity.y = -3; res.lavaCheck1 = true; }, Math.random() * 4500);
 	        res.lavaCheck1 = false;
 
@@ -548,13 +548,13 @@ function update() {
 	}
 	if (res.lavaB_2 != null) {
 	    moveLavaB(res.lavaB_2, res.lavaB_2.velocity.x, res.lavaB_2.velocity.y);
-	    if (res.lavaB_2.velocity.y == 0 && res.lavaCheck2) {
+	    if (res.lavaB_2.velocity.y === 0 && res.lavaCheck2) {
 	        setTimeout(function () { res.lavaB_2.velocity.y = -3; res.lavaCheck2 = true; }, Math.random() * 4500);
 	        res.lavaCheck2 = false;
 	    }
 	}
 
-	if (res.level == -1) {
+	if (res.level === -1) {
 		for (var i = 0; i < res.fish.length; i++) {
 			if (res.player.x < res.fish[i].x - (i * 6 + i)) {
 				res.fish[i].velocity.x = -1;
@@ -574,6 +574,10 @@ function update() {
 		res.score++;
 		document.getElementById('levelNum').innerHTML = res.score;
 	}
+
+	if (document.getElementById("time").innerHTML === "0") {
+	    res.gameOver = true;
+	}
 }
 
 
@@ -582,7 +586,7 @@ function draw() {
 	var c = document.getElementById('screen').getContext('2d');
 
     // draw background
-	if (res.level == -1) {
+	if (res.level === -1) {
 	    c.fillStyle = '#000090'
 	}
 	else {
@@ -623,10 +627,10 @@ function draw() {
 		c.drawImage(crImg, r.x, r.y);
 	}
 
-	// draw diamond
-	var dImg = document.getElementById('diamond');
-	if (res.diam != null) {
-		c.drawImage(dImg, res.diam.x, res.diam.y);
+	// draw endLevel
+	var dImg = document.getElementById('endLevel');
+	if (res.endL != null) {
+		c.drawImage(dImg, res.endL.x, res.endL.y);
 	}
 
     // draw killblocks
@@ -645,15 +649,15 @@ function draw() {
 		c.drawImage(sImg, s.x, s.y);
 	}
 
-	// draw snake
-	var snImg = document.getElementById('snake_l');
-	var snRImg = document.getElementById('snake_r');
-	if (res.snake != null) {
-		if (res.snake.velocity.x > 0) {
-			c.drawImage(snRImg, res.snake.x, res.snake.y);
+	// draw bandit
+	var snImg = document.getElementById('bandit_l');
+	var snRImg = document.getElementById('bandit_r');
+	if (res.bandit != null) {
+		if (res.bandit.velocity.x > 0) {
+			c.drawImage(snRImg, res.bandit.x, res.bandit.y);
 		}
 		else {
-			c.drawImage(snImg, res.snake.x, res.snake.y);
+			c.drawImage(snImg, res.bandit.x, res.bandit.y);
 		}
 	}
 	// draw fish
@@ -679,7 +683,7 @@ function draw() {
 	}
 
 	if (res.gameComplete) {
-	    if (res.level == res.GAME_END_CAVE || res.level == res.GAME_END_LAVA || res.level == res.GAME_END_MINE) {
+	    if (res.level === res.GAME_END_CAVE || res.level === res.GAME_END_LAVA || res.level === res.GAME_END_MINE) {
 			var cImg = document.getElementById('complete');
 			c.drawImage(cImg, 100, 60);
 		}
@@ -709,42 +713,47 @@ function draw() {
 
 
 // reset the game
-function nextLevel() {
-	res.rects = [];
-	res.fish = [];
-	res.rectsCreated = [];
-	res.killblocks = [];
-	res.snake = null;
-	res.lavaB_1 = null;
-	res.lavaB_2 = null;
+function startLevel(type) {
+    document.getElementById("time").innerHTML = 60;
 
-	if (res.level < 11)
-	{
-	    startCaveGame();
-	}
-	else if (res.level > 10 && res.level < 21)
-	{
-	    startLavaGame();
-	}
-	else
-	{
-	    startMineGame();
-	}
+    res.rects = [];
+    res.fish = [];
+    res.rectsCreated = [];
+    res.killblocks = [];
+    res.bandit = null;
+    res.endL = null;
+    res.lavaB_1 = null;
+    res.lavaB_2 = null;
 
 	document.getElementById('scoreLevel').innerHTML = 'Level: ';
-
 	document.getElementById('reset').style.display = 'inline';
+
+	switch (type) {
+	    case 0:
+	        res.level = 1;
+	        startCaveGame();
+	        break;
+	    case 1:
+	        res.level = 11;
+	        startLavaGame();
+	        break;
+	    case 2:
+	        res.level = 21;
+	        startMineGame();
+	        break;
+	}
 }
 
 
 // start the fish level
+// NOTE: not in game currently
 function fishLevel() {
 	res.rects = [];
 	res.fish = [];
 	res.rectsCreated = [];
 	res.killblocks = [];
-	res.snake = null;
-	res.diam = null;
+	res.bandit = null;
+	res.endL = null;
 	res.lavaB_1 = null;
 	res.lavaB_2 = null;
 	res.level = -1;
@@ -755,44 +764,6 @@ function fishLevel() {
 	document.getElementById('scoreLevel').innerHTML = 'Score: ';
 
 	document.getElementById('reset').style.display = 'none';
-}
-
-
-// start the lava levels
-function lavaLevel() {
-    res.rects = [];
-    res.fish = [];
-    res.rectsCreated = [];
-    res.killblocks = [];
-    res.snake = null;
-    res.diam = null;
-    res.lavaB_1 = null;
-    res.lavaB_2 = null;
-    res.level = 11;
-    startLavaGame();
-
-    document.getElementById('scoreLevel').innerHTML = 'Level: ';
-
-    document.getElementById('reset').style.display = 'inline';
-}
-
-
-// start the mine levels
-function mineLevel() {
-    res.rects = [];
-    res.fish = [];
-    res.rectsCreated = [];
-    res.killblocks = [];
-    res.snake = null;
-    res.diam = null;
-    res.lavaB_1 = null;
-    res.lavaB_2 = null;
-    res.level = 21;
-    startMineGame();
-
-    document.getElementById('scoreLevel').innerHTML = 'Level: ';
-
-    document.getElementById('reset').style.display = 'inline';
 }
 
 
@@ -825,11 +796,20 @@ window.onload = function () {
     res.level = 1;
 
     setInterval(function () {
-        if (res.gameComplete == false && res.gameOver == false) {
+        if (res.gameComplete === false && res.gameOver === false) {
             update();
             draw();
         }
     }, 1000 / 60);
+
+    setInterval(function () {
+        if (res.gameComplete === false && res.gameOver === false && time !== "0") {
+            var time = document.getElementById("time").innerHTML;
+
+            time = Number(time) - 1;
+            document.getElementById("time").innerHTML = time;
+        }
+    }, 1000);
 
     setClickEvent();
     startCaveGame();

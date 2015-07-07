@@ -45,15 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\bandit_r.PNG" />
     <Content Include="img\block.png" />
     <Content Include="img\created.png" />
-    <Content Include="img\diamond.png" />
+    <Content Include="img\endLevel.png" />
     <Content Include="img\snake.png" />
     <Content Include="img\snake_r.png" />
     <Content Include="RBI_Mobile.html" />
     <Content Include="img\bandit.PNG" />
     <Content Include="img\complete.PNG" />
-    <Content Include="img\diamond_end.PNG" />
+    <Content Include="img\endLevel_end.PNG" />
     <Content Include="img\fish.png" />
     <Content Include="img\fish_r.png" />
     <Content Include="img\gameover.png" />

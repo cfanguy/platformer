@@ -769,6 +769,8 @@ function fishLevel() {
 
 // reset the player position for a level reset
 function resetLevel() {
+    document.getElementById("time").innerHTML = 60;
+
 	res.rectsCreated = [];
 
 	res.gameComplete = false;

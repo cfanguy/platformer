@@ -745,6 +745,29 @@ function startLevel(type) {
 }
 
 
+function nextLevel() {
+    res.rects = [];
+    res.fish = [];
+    res.rectsCreated = [];
+    res.killblocks = [];
+    res.snake = null;
+    res.lavaB_1 = null;
+    res.lavaB_2 = null;
+
+    document.getElementById("time").innerHTML = 60;
+
+    if (res.level < 11) {
+        startCaveGame();
+    }
+    else if (res.level > 10 && res.level < 21) {
+        startLavaGame();
+    }
+    else {
+        startMineGame();
+    }
+}
+
+
 // start the fish level
 // NOTE: not in game currently
 function fishLevel() {

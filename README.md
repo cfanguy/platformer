@@ -3,6 +3,4 @@ platformer
 
 Rock Bottom Innovations
 
-HTML5/JS Canvas Game
-
-Desktop Version: http://cfanguy.github.io/platformer/
+HTML5 Canvas API Game
